@@ -1,0 +1,27 @@
+.btn {
+	padding: 0.5rem 2rem;
+
+	transition-duration: 0.5s;
+
+	border: none;
+	border-radius: 5px;
+
+	box-shadow: rgb(0 0 0 / 16%) 0 1px 4px;
+}
+
+.btn-primary {
+	background: var(--color-primary);
+
+	color: white;
+	font-size: 13px;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+
+	cursor: pointer;
+}
+
+.btn-full {
+	width: 100%;
+}

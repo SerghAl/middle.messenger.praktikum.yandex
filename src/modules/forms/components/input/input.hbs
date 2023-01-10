@@ -1,0 +1,14 @@
+<div class='input--container'>
+	<label class='input--label' for='id-{{name}}'>{{label}}</label>
+	<input
+		class='input {{#if error}}input-error{{/if}}'
+		id='id-{{name}}'
+		name='{{name}}'
+		type='{{type}}'
+		value='{{value}}'
+		placeholder='{{placeholder}}'
+	/>
+	{{#if hint}}
+		<span class='input--hint {{#if error}}input--hint-error{{/if}}'>{{hint}}</span>
+	{{/if}}
+</div>

@@ -1,0 +1,17 @@
+.reg_page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+
+	background-image:
+		linear-gradient(
+			to top,
+			rgb(0 0 0 / 30%),
+			rgb(0 0 0 / 30%)
+		),
+		url("../../../static/images/bg-main.jpg");
+	background-repeat: no-repeat, no-repeat;
+	background-size: cover;
+}

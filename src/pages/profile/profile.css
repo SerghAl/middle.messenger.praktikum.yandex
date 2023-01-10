@@ -1,0 +1,40 @@
+.profile_page {
+	display: flex;
+	height: 100vh;
+}
+
+.profile_page--btn_back {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 100%;
+
+	transition: all;
+	transition-duration: 0.5s;
+
+	background: rgb(255 255 255 / 70%);
+	backdrop-filter: blur(4px);
+}
+
+.profile_page--btn_back:hover {
+	background: rgb(255 255 255 / 50%);
+
+	cursor: pointer;
+}
+
+.profile {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile--display_name {
+	margin-bottom: 20px;
+
+	color: white;
+	font-size: 16px;
+}

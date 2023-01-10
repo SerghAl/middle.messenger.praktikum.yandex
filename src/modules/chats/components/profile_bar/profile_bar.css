@@ -1,0 +1,54 @@
+.profile_bar {
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: space-between;
+	height: 54px;
+	margin-bottom: 46px;
+	padding: 10px 0;
+
+	border-bottom: 1px solid var(--color-input);
+}
+
+.profile_bar--meta {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.profile_bar--img {
+	width: 34px;
+	height: 34px;
+	margin-right: 10px;
+
+	border: none;
+	border-radius: 50%;
+
+	background: var(--color-secondary);
+}
+
+.profile_bar--title {
+	color: white;
+	font-size: 13px;
+}
+
+.profile_bar--controls {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.profile_bar--menu {
+	width: 15px;
+	height: 15px;
+	margin-right: 10px;
+
+	transform: rotate(90deg);
+
+	stroke: #fff;
+
+	fill: #fff;
+}
+
+.profile_bar--menu:hover {
+	cursor: pointer;
+}

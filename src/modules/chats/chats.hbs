@@ -1,0 +1,20 @@
+<div class='chat'>
+	{{#if img}}
+		<img src='{{img}}' alt='{{chatTitle}}' class='chat--icon' />
+	{{else}}
+		<div class='chat--icon'></div>
+	{{/if}}
+	<div class='chat--msg_info'>
+		<h3 class='chat--title'>{{chatTitle}}</h3>
+		<p class='chat--msg'>
+			{{#if ownMsg}}<span class='chat--own_msg'>Вы: </span>{{/if}}
+			{{chatMsg}}
+		</p>
+	</div>
+	<div class='chat--meta'>
+		<span class='chat--time'>{{chatTime}}</span>
+		{{#if chatNewMsgs}}
+			<span class='chat--new_msgs'>{{chatNewMsgs}}</span>
+		{{/if}}
+	</div>
+</div>

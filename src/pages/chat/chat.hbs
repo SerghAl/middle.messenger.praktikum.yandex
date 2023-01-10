@@ -1,0 +1,32 @@
+<main class='chat_page'>
+	<aside class='chat_list'>
+		{{{controls}}}
+		{{{search}}}
+		<ul>
+			{{#each chatList}}
+				{{{this}}}
+			{{/each}}
+		</ul>
+	</aside>
+	<div class='chat_dialogue'>
+		{{#if dialogue}}
+			<div class='chat_dialogue--profile'>
+				{{{profileBar}}}
+			</div>
+			<div class='chat_dialogue--messages'>
+				{{#each dialogue}}
+					{{{this}}}
+				{{/each}}
+			</div>
+			<div class='chat_dialogue--message_bar'>
+				{{{messageBar}}}
+			</div>
+		{{else}}
+			<div class='chat_dialogue--filler'>
+				<p class='chat_dialogue--filler_text'>Выберите чат чтобы отправить
+					сообщение</p>
+			</div>
+		{{/if}}
+
+	</div>
+</main>
