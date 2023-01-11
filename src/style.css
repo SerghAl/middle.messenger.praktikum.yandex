@@ -25,6 +25,10 @@ html {
 }
 
 .root {
+	background: var(--color-primary);
+}
+
+.main_bg {
 	background-image: linear-gradient(to top, rgb(0 0 0 / 30%), rgb(0 0 0 / 30%)),
 		url('../static/images/bg-main.jpg');
 	background-repeat: no-repeat, no-repeat;
