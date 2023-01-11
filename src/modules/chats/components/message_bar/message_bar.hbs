@@ -1,9 +1,14 @@
 <div class='message_bar'>
-	<button class='message_bar--attach_btn'><img src='{{attachIcon}}' /></button>
+	<button class='message_bar--attach_btn'><img
+			src='{{attachIcon}}'
+			alt='Прикрепить файлы'
+		/></button>
 	<form class='message_bar--form' action='{{action}}' method='{{method}}'>
 		<input type='text' class='message_bar--input' />
 		<button class='message_bar--submit'>
 			<svg
+				role='img'
+				aria-label='Отправить'
 				width='28'
 				height='28'
 				viewBox='0 0 28 28'

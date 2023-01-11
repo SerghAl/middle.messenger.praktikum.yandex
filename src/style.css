@@ -3,7 +3,11 @@
 	margin: 0;
 	padding: 0;
 
+	color: black;
+
 	font-size: 100%;
+	list-style: none;
+	text-decoration: none;
 }
 
 html {
@@ -33,6 +37,43 @@ html {
 		url('../static/images/bg-main.jpg');
 	background-repeat: no-repeat, no-repeat;
 	background-size: cover;
+}
+
+.main_nav {
+	position: absolute;
+	z-index: 10;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+
+	background: var(--color-primary);
+}
+
+.main_nav--items {
+	display: flex;
+	justify-content: space-around;
+}
+
+.main_nav--item {
+	flex-grow: 1;
+}
+
+.main_nav--link {
+	display: inline-block;
+	width: 100%;
+	padding: 4px 0;
+
+	transition: all;
+	transition-duration: 0.25s;
+
+	color: white;
+
+	font-size: var(--font-base);
+	text-align: center;
+}
+
+.main_nav--link:hover {
+	background: var(--color-accent);
 }
 
 .hidden {
