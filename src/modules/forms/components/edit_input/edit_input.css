@@ -15,7 +15,7 @@
 	background: none;
 
 	color: var(--color-secondary);
-	font-size: 13px;
+	font-size: var(--font-base);
 	text-align: right;
 	appearance: none;
 }
@@ -26,5 +26,5 @@
 
 .edit_input--label {
 	color: var(--color-primary);
-	font-size: 13px;
+	font-size: var(--font-base);
 }

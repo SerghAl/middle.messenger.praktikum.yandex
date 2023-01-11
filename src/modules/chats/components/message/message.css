@@ -9,7 +9,7 @@
 
 	background: var(--color-primary);
 
-	font-size: 12px;
+	font-size: var(--font-sm);
 	line-height: 1.2;
 }
 
@@ -48,8 +48,8 @@
 	display: block;
 
 	color: var(--color-secondary);
-	font-size: 9px;
-	line-height: 9px;
+	font-size: var(--font-xs);
+	line-height: var(--font-xs);
 	text-align: right;
 }
 
