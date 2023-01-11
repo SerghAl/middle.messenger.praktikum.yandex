@@ -36,13 +36,13 @@
 	margin-bottom: 8px;
 
 	color: var(--color-primary);
-	font-size: 13px;
+	font-size: var(--font-base);
 	font-weight: bold;
 }
 
 .chat--msg {
 	color: var(--color-secondary);
-	font-size: 12px;
+	font-size: var(--font-sm);
 }
 
 .chat--own_msg {
@@ -61,7 +61,7 @@
 
 .chat--time {
 	color: var(--color-secondary);
-	font-size: 9px;
+	font-size: var(--font-xs);
 	text-align: right;
 }
 
@@ -77,5 +77,5 @@
 	background: var(--color-primary);
 
 	color: white;
-	font-size: 11px;
+	font-size: var(--font-sm);
 }

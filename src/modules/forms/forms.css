@@ -30,7 +30,7 @@
 	margin-bottom: 10px;
 
 	color: var(--color-primary);
-	font-size: 20px;
+	font-size: var(--font-xl);
 }
 
 .form--container {
@@ -44,7 +44,4 @@
 .form--inputs {
 	flex-grow: 1;
 	margin-bottom: 10px;
-}
-
-.form--controls {
 }

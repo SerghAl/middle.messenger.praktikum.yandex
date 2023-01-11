@@ -14,7 +14,7 @@
 	background: var(--color-input);
 
 	color: var(--color-secondary);
-	font-size: 12px;
+	font-size: var(--font-sm);
 	text-align: center;
 	appearance: none;
 }

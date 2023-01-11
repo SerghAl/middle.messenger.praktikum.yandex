@@ -5,13 +5,8 @@
 	justify-content: center;
 	height: 100vh;
 
-	background-image:
-		linear-gradient(
-			to top,
-			rgb(0 0 0 / 70%),
-			rgb(0 0 0 / 30%)
-		),
-		url("../../../static/images/bg-500.jpg");
+	background-image: linear-gradient(to top, rgb(0 0 0 / 70%), rgb(0 0 0 / 30%)),
+		url('../../../static/images/bg-500.jpg');
 	background-repeat: no-repeat, no-repeat;
 	background-size: cover;
 }
@@ -20,7 +15,7 @@
 	margin-bottom: 10px;
 
 	color: white;
-	font-size: 40px;
+	font-size: var(--font-2xl);
 	font-weight: bold;
 }
 
@@ -28,12 +23,12 @@
 	margin-bottom: 20px;
 
 	color: white;
-	font-size: 20px;
+	font-size: var(--font-xl);
 }
 
 .error_page--link {
 	color: white;
-	font-size: 16px;
+	font-size: var(--font-lg);
 	text-decoration-color: var(--color-accent);
 	text-underline-offset: 4px;
 }

@@ -18,7 +18,13 @@ export default {
 		title: 'Личные данные',
 		method: 'POST',
 		action: '/fakeapi/v1/profile',
-		controls: [Button({ title: 'Сохранить', type: 'primary' })],
+		controls: [
+			Button({
+				title: 'Сохранить',
+				type: 'primary',
+				data: { key: 'href', value: 'unfound' },
+			}),
+		],
 		inputs: [
 			EditInput({
 				type: 'email',
@@ -62,7 +68,13 @@ export default {
 		title: 'Изменить пароль',
 		method: 'POST',
 		action: '/fakeapi/v1/profile',
-		controls: [Button({ title: 'Сохранить', type: 'primary' })],
+		controls: [
+			Button({
+				title: 'Сохранить',
+				type: 'primary',
+				data: { key: 'href', value: 'error' },
+			}),
+		],
 		inputs: [
 			EditInput({
 				type: 'password',

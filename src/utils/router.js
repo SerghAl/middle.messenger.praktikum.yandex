@@ -1,5 +1,4 @@
 import chatView from '../pages/chat';
-import homeView from '../pages/home';
 import profileView from '../pages/profile';
 import unfoundView from '../pages/404';
 import errorView from '../pages/500';
@@ -12,7 +11,6 @@ import authData from '../fixtures/authorization';
 import regData from '../fixtures/registration';
 
 export const ROUTES = {
-	HOME: homeView,
 	CHAT: chatView,
 	PROFILE: profileView,
 	UNFOUND: unfoundView,
@@ -38,9 +36,6 @@ export const getRoute = (e) => {
 	switch (route) {
 		case 'chat':
 			setRoute(ROUTES.CHAT, chatsData);
-			break;
-		case 'home':
-			setRoute(ROUTES.HOME);
 			break;
 		case 'profile':
 			setRoute(ROUTES.PROFILE, profileData);

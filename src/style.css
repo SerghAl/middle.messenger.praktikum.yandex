@@ -13,17 +13,20 @@ html {
 	--color-input: #e3eefa;
 	--color-gray: #999;
 
+	--font-2xs: 8px;
+	--font-xs: 9px;
+	--font-sm: 12px;
+	--font-base: 13px;
+	--font-lg: 16px;
+	--font-xl: 20px;
+	--font-2xl: 40px;
+
 	font-family: Inter, sans-serif;
 }
 
 .root {
-	background-image:
-		linear-gradient(
-			to top,
-			rgb(0 0 0 / 30%),
-			rgb(0 0 0 / 30%)
-		),
-		url("../static/images/bg-main.jpg");
+	background-image: linear-gradient(to top, rgb(0 0 0 / 30%), rgb(0 0 0 / 30%)),
+		url('../static/images/bg-main.jpg');
 	background-repeat: no-repeat, no-repeat;
 	background-size: cover;
 }

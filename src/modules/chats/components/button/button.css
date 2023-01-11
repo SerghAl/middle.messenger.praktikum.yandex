@@ -1,14 +1,12 @@
-.arrow {
+.chat_controls--arrow {
 	display: inline-block;
 	margin-left: 5px;
 	padding: 2px;
 
+	transform: rotate(-45deg);
+
 	border: solid var(--color-primary);
 	border-width: 0 1px 1px 0;
-}
-
-.right {
-	transform: rotate(-45deg);
 }
 
 .chat_controls {
@@ -26,7 +24,7 @@
 	background: none;
 
 	color: var(--color-primary);
-	font-size: 12px;
+	font-size: var(--font-sm);
 	text-decoration: none;
 	appearance: none;
 }

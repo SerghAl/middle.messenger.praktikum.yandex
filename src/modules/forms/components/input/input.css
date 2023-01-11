@@ -16,7 +16,7 @@
 	background: none;
 
 	color: var(--color-primary);
-	font-size: 13px;
+	font-size: var(--font-base);
 	appearance: none;
 }
 
@@ -30,14 +30,14 @@
 
 .input--label {
 	color: var(--color-gray);
-	font-size: 9px;
+	font-size: var(--font-xs);
 }
 
 .input--hint {
 	margin-top: 4px;
 
 	color: var(--color-gray);
-	font-size: 8px;
+	font-size: var(--font-2xs);
 }
 
 .input--hint-error {

@@ -29,7 +29,7 @@
 
 .profile_bar--title {
 	color: white;
-	font-size: 13px;
+	font-size: var(--font-base);
 }
 
 .profile_bar--controls {
