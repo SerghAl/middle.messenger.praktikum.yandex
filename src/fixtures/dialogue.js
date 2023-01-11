@@ -1,7 +1,7 @@
 import { Message } from '../modules/chats/chats';
 import msgImg from '../../static/images/msg-img.jpg';
 
-export default dialogueData = [
+const dialogueData = [
 	Message(
 		{
 			msg: [
@@ -34,3 +34,5 @@ export default dialogueData = [
 		isViewed: true,
 	}),
 ];
+
+export default dialogueData;

@@ -9,7 +9,8 @@
 		"npm": ">=8.19.2"
 	},
 	"scripts": {
-		"start": "parcel",
+		"start": "node server.js",
+		"dev": "parcel",
 		"build": "parcel build"
 	},
 	"author": "Sergey Alabuzhev",
@@ -22,6 +23,7 @@
 		"stylelint-config-property-sort-order-smacss": "^9.0.0"
 	},
 	"dependencies": {
+		"express": "^4.18.2",
 		"handlebars": "^4.7.7"
 	}
 }

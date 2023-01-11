@@ -13,7 +13,7 @@ document.addEventListener('click', (e) => {
 
 			return;
 		} else if (target.classList.contains('chat')) {
-			prevSelectedChat = document.querySelector('.chat-selected');
+			let prevSelectedChat = document.querySelector('.chat-selected');
 			if (prevSelectedChat) {
 				prevSelectedChat.classList.remove('chat-selected');
 			}
