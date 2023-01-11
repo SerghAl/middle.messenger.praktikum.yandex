@@ -1,5 +1,9 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3904327e-1296-4a8c-9d99-56408df82a4c/deploy-status)](https://app.netlify.com/sites/chic-sunburst-b58aa5/deploys)
 
+### Демо
+
+Проект на Netlify: https://chic-sunburst-b58aa5.netlify.app
+
 ### Дизайн мессенджера
 
 Дизайн в Figmа: https://www.figma.com/file/nW7r9fME8TXq78BxTierQU/Snowball-messenger?node-id=0%3A1&t=t4OB52eyYYkxEpyp-1
