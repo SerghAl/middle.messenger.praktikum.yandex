@@ -9,7 +9,7 @@ import { documentDataAttrListener } from './utils/listener';
 export const dispatcher = new EventEmitter();
 
 dispatcher.subscribe('loadChat', () => {
-	let dialogue = { dialogueData };
+	let dialogue = dialogueData;
 
 	setRoute(ROUTES.CHAT, { ...chatsData, dialogue });
 });
