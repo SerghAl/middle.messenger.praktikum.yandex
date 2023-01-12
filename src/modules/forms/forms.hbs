@@ -1,0 +1,21 @@
+<div class='form--container'>
+	{{#if title}}
+		<h3 class='form--title'>{{title}}</h3>
+	{{/if}}
+	<form class='form {{#if size}}form-{{size}}{{/if}} {{#if height}}form-h{{height}}{{/if}}' method='{{method}}' action='{{action}}'>
+		{{#if innerTitle}}
+			<h3 class='form--inner_title'>{{innerTitle}}</h3>
+		{{/if}}
+		<div class='form--inputs'>
+			{{#each inputs}}
+				{{{this}}}
+			{{/each}}
+		</div>
+
+		<div class='form--controls'>
+			{{#each controls}}
+				{{{this}}}
+			{{/each}}
+		</div>
+	</form>
+</div>
