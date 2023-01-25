@@ -1,5 +1,5 @@
 import ImageForm from './image_form.hbs';
-import styles from './image_form.css';
+import './image_form.css';
 
 import { documentClassNameListener } from '../../../../utils/listener';
 

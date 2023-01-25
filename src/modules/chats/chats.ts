@@ -1,11 +1,11 @@
 import Chat from './chats.hbs';
-import styles from './chats.css';
+import './chats.css';
 import { dispatcher } from '../../index';
 
 import Message from './components/message';
 
-document.addEventListener('click', (e) => {
-	let target = e.target;
+document.addEventListener('click', (e: MouseEvent) => {
+	let target: HTMLElement = <HTMLElement>e.target;
 
 	while (target.parentNode !== null) {
 		if (target.classList.contains('chat-selected')) {
@@ -23,7 +23,7 @@ document.addEventListener('click', (e) => {
 
 			return;
 		} else {
-			target = target.parentNode;
+			target = target.parentNode as HTMLElement;
 		}
 	}
 });

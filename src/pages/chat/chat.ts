@@ -1,4 +1,4 @@
 import chatView from './chat.hbs';
-import styles from './chat.css';
+import './chat.css';
 
 export default chatView;

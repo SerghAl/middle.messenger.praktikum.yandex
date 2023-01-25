@@ -1,4 +1,4 @@
 import Message from './message.hbs';
-import styles from './message.css';
+import './message.css';
 
 export default Message;

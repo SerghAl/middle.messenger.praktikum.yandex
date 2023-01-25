@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		// "outDir": "dist",
+		// "rootDir": "src",
+		"target": "ESNext",
+		// "declaration": false,
+		// "module": "esnext",
+		// "moduleResolution": "NodeNext",
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"sourceMap": true,
+		"strictNullChecks": true
+	},
+	"include": ["src/**/*"]
+}

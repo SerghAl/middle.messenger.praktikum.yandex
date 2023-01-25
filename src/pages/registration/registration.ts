@@ -1,4 +1,4 @@
 import registrationView from './registration.hbs';
-import styles from './registration.css';
+import './registration.css';
 
 export default registrationView;

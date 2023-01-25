@@ -1,4 +1,4 @@
 import TextButton from './button.hbs';
-import styles from './button.css';
+import './button.css';
 
 export default TextButton;

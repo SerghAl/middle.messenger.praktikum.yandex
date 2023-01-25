@@ -1,5 +1,5 @@
 import { getRoute, setRoute, ROUTES } from './utils/router';
-import EventEmitter from './utils/event_emitter';
+import EventEmitter from './utils/event_bus';
 import authData from './fixtures/authorization';
 import chatsData from './fixtures/chats';
 import dialogueData from './fixtures/dialogue';

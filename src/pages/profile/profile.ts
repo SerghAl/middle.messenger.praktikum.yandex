@@ -1,5 +1,5 @@
 import profileView from './profile.hbs';
-import styles from './profile.css';
+import './profile.css';
 
 import { getRoute } from '../../utils/router';
 import { documentClassNameListener } from '../../utils/listener';

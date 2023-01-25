@@ -19,11 +19,15 @@ export const ROUTES = {
 	REGISTRATION: registrationView,
 };
 
-export const setRoute = (route, data) => {
-	document.getElementById('app').innerHTML = route(data);
+export const setRoute = (route: Function, data: any): void => {
+	let root = document.getElementById('app');
+
+	if (root) {
+		root.innerHTML = route(data);
+	}
 };
 
-export const getRoute = (e) => {
+export const getRoute = (e: Event): void => {
 	e.preventDefault();
 	let route;
 

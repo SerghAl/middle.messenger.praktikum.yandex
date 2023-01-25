@@ -4,7 +4,7 @@ var port = 3000;
 
 app.use(express.static('dist'));
 
-app.get('/', function (req, res) {
+app.get('/', function (_: any, res: any) {
 	res.render('index');
 });
 

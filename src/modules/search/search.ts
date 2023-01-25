@@ -1,4 +1,4 @@
 import Search from './search.hbs';
-import styles from './search.css';
+import './search.css';
 
 export default Search;
