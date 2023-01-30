@@ -1,3 +1,3 @@
-import authorizationView from './authorization';
+import AuthorizationView from './authorization';
 
-export default authorizationView;
+export default AuthorizationView;

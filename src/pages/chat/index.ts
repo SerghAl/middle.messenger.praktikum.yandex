@@ -1,3 +1,3 @@
-import chatView from './chat';
+import ChatView from './chat';
 
-export default chatView;
+export default ChatView;

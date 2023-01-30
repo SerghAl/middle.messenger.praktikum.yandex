@@ -1,4 +1,15 @@
-import registrationView from './registration.hbs';
+import tpl from './registration.hbs';
 import './registration.css';
+import Component from '../../utils/component';
 
-export default registrationView;
+class RegistrationView extends Component {
+	constructor(props: Props) {
+		super('main', { ...props, attrs: { class: 'reg_page main_bg' } });
+	}
+
+	render() {
+		return this.compile(tpl);
+	}
+}
+
+export default RegistrationView;

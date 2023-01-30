@@ -1,4 +1,15 @@
-import chatView from './chat.hbs';
+import tpl from './chat.hbs';
 import './chat.css';
+import Component from '../../utils/component';
 
-export default chatView;
+class ChatView extends Component {
+	constructor(props: Props) {
+		super('main', { ...props, attrs: { class: 'chat_page main_bg' } });
+	}
+
+	render() {
+		return this.compile(tpl);
+	}
+}
+
+export default ChatView;

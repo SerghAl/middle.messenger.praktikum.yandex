@@ -1,3 +1,3 @@
-import errorView from './500';
+import ErrorView from './500';
 
-export default errorView;
+export default ErrorView;

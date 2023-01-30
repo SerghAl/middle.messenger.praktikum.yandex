@@ -44,3 +44,9 @@
 	color: white;
 	font-size: var(--font-base);
 }
+
+.chat_controls {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 24px;
+}

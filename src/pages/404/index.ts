@@ -1,3 +1,3 @@
-import unfoundView from './404';
+import UnfoundView from './404';
 
-export default unfoundView;
+export default UnfoundView;

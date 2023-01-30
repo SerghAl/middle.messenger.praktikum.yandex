@@ -4,19 +4,19 @@ import Button from '../components/button';
 import TextButton from '../components/text_button';
 
 export default {
-	regForm: Form({
+	regForm: new Form({
 		size: 's',
 		innerTitle: 'Регистрация',
 		method: 'POST',
 		action: '/fakeapi/v1/profile',
 		controls: [
-			Button({
+			new Button({
 				title: 'Зарегистрироваться',
 				type: 'primary',
 				size: 'full',
 				data: { key: 'href', value: 'chat' },
 			}),
-			TextButton({
+			new TextButton({
 				title: 'Войти',
 				type: 'primary',
 				size: 'full',
@@ -24,50 +24,50 @@ export default {
 			}),
 		],
 		inputs: [
-			Input({
+			new Input({
 				type: 'email',
 				label: 'Почта',
 				name: 'email',
 				value: 'pochta@yandex.ru',
 			}),
-			Input({
+			new Input({
 				type: 'text',
 				label: 'Логин',
 				name: 'login',
 				value: 'ivanivanov',
 			}),
-			Input({
+			new Input({
 				type: 'text',
 				label: 'Имя',
 				name: 'first_name',
 				value: 'Иван',
 			}),
-			Input({
+			new Input({
 				type: 'text',
 				label: 'Фамилия',
 				name: 'second_name',
 				value: 'Иванов',
 			}),
-			Input({
+			new Input({
 				type: 'text',
 				label: 'Имя в чате',
 				name: 'display_name',
 				value: 'Иван',
 			}),
-			Input({
+			new Input({
 				type: 'tel',
 				label: 'Телефон',
 				name: 'phone',
 				value: '+7 (909) 967 30 30',
 			}),
-			Input({
+			new Input({
 				type: 'password',
 				label: 'Пароль',
 				name: 'password',
 				value: '••••••••••••',
 				error: true,
 			}),
-			Input({
+			new Input({
 				type: 'password',
 				label: 'Пароль (ещё раз)',
 				name: 'password',

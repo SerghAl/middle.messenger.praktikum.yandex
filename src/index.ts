@@ -4,19 +4,21 @@ import authData from './fixtures/authorization';
 import chatsData from './fixtures/chats';
 import dialogueData from './fixtures/dialogue';
 
-import { documentDataAttrListener } from './utils/listener';
-
 export const dispatcher = new EventEmitter();
 
-dispatcher.subscribe('loadChat', () => {
+dispatcher.on('loadChat', (): void => {
 	let dialogue = dialogueData;
 
 	setRoute(ROUTES.CHAT, { ...chatsData, dialogue });
 });
 
-documentDataAttrListener('click', 'href', (e) => {
-	e.preventDefault();
-	getRoute(e);
+let navLinks = Array.from(document.querySelectorAll('.main_nav--link'));
+
+navLinks.forEach((link) => {
+	link.addEventListener('click', (e: Event) => {
+		e.preventDefault();
+		getRoute(e);
+	});
 });
 
 setRoute(ROUTES.AUTHORIZATION, authData);

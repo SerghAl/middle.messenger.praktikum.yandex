@@ -1,11 +1,16 @@
-import profileView from './profile.hbs';
+import tpl from './profile.hbs';
 import './profile.css';
 
-import { getRoute } from '../../utils/router';
-import { documentClassNameListener } from '../../utils/listener';
+import Component from '../../utils/component';
 
-export default profileView;
+class ProfileView extends Component {
+	constructor(props: Props) {
+		super('main', { ...props, attrs: { class: 'profile_page main_bg' } });
+	}
 
-documentClassNameListener('click', 'profile_page--btn_back', (e) =>
-	getRoute(e)
-);
+	render() {
+		return this.compile(tpl);
+	}
+}
+
+export default ProfileView;

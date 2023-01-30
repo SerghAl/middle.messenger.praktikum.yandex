@@ -1,3 +1,3 @@
-import registrationView from './registration';
+import RegistrationView from './registration';
 
-export default registrationView;
+export default RegistrationView;

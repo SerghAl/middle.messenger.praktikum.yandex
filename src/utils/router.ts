@@ -1,8 +1,8 @@
-import chatView from '../pages/chat';
-import profileView from '../pages/profile';
-import unfoundView from '../pages/404';
-import errorView from '../pages/500';
-import authorizationView from '../pages/authorization';
+import ChatView from '../pages/chat';
+import ProfileView from '../pages/profile';
+import UnfoundView from '../pages/404';
+import ErrorView from '../pages/500';
+import AuthorizationView from '../pages/authorization';
 import registrationView from '../pages/registration/registration';
 
 import chatsData from '../fixtures/chats';
@@ -11,19 +11,21 @@ import authData from '../fixtures/authorization';
 import regData from '../fixtures/registration';
 
 export const ROUTES = {
-	CHAT: chatView,
-	PROFILE: profileView,
-	UNFOUND: unfoundView,
-	ERROR: errorView,
-	AUTHORIZATION: authorizationView,
+	CHAT: ChatView,
+	PROFILE: ProfileView,
+	UNFOUND: UnfoundView,
+	ERROR: ErrorView,
+	AUTHORIZATION: AuthorizationView,
 	REGISTRATION: registrationView,
 };
 
-export const setRoute = (route: Function, data: any): void => {
+export const setRoute = (View, data: any): void => {
 	let root = document.getElementById('app');
 
 	if (root) {
-		root.innerHTML = route(data);
+		let page = new View(data);
+		root.innerHTML = '';
+		root.appendChild(page.getContent());
 	}
 };
 

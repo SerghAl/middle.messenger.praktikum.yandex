@@ -1,32 +1,38 @@
-import Chat from './chats.hbs';
+import tpl from './chats.hbs';
 import './chats.css';
 import { dispatcher } from '../../index';
+import Component from '../../utils/component';
 
-import Message from './components/message';
+class Chat extends Component {
+	constructor(props: Props) {
+		super('div', {
+			...props,
+			events: {
+				click: () => {
+					if (this._element.classList.contains('chat-selected')) {
+						this._element.classList.remove('chat-selected');
 
-document.addEventListener('click', (e: MouseEvent) => {
-	let target: HTMLElement = <HTMLElement>e.target;
+						return;
+					} else {
+						let prevSelectedChat = document.querySelector('.chat-selected');
+						if (prevSelectedChat) {
+							prevSelectedChat.classList.remove('chat-selected');
+						}
 
-	while (target.parentNode !== null) {
-		if (target.classList.contains('chat-selected')) {
-			target.classList.remove('chat-selected');
+						this._element.classList.add('chat-selected');
+						dispatcher.emit('loadChat', this._element);
 
-			return;
-		} else if (target.classList.contains('chat')) {
-			let prevSelectedChat = document.querySelector('.chat-selected');
-			if (prevSelectedChat) {
-				prevSelectedChat.classList.remove('chat-selected');
-			}
-
-			target.classList.add('chat-selected');
-			dispatcher.emit('loadChat', target);
-
-			return;
-		} else {
-			target = target.parentNode as HTMLElement;
-		}
+						return;
+					}
+				},
+			},
+			attrs: { class: 'chat' },
+		});
 	}
-});
 
-export { Message };
+	render() {
+		return this.compile(tpl);
+	}
+}
+
 export default Chat;

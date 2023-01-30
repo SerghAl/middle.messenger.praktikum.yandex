@@ -1,17 +1,13 @@
 {{#if msg}}
-	<div class='message {{#if isOwn}}message-own{{/if}}'>
-		{{#each msg}}
-			<p class='message--text {{#if ../isOwn}}message--text-light{{/if}}'>{{this}}</p>
-		{{/each}}
-		<span class='message--time {{#if isOwn}}message--time-light{{/if}}'>{{time}}</span>
-	</div>
+	{{#each msg}}
+		<p class='message--text {{#if ../isOwn}}message--text-light{{/if}}'>{{this}}</p>
+	{{/each}}
+	<span class='message--time {{#if isOwn}}message--time-light{{/if}}'>{{time}}</span>
 {{/if}}
 
 {{#if images}}
-	<div class='message message-with_image {{#if isOwn}}message-own{{/if}}'>
-		{{#each images}}
-			<img src='{{img}}' alt='{{#if title}}{{title}}{{else}}{{img}}{{/if}}' class='message--img' />
-		{{/each}}
-		<span class='message--time message--time-plank'>{{time}}</span>
-	</div>
+	{{#each images}}
+		<img src='{{img}}' alt='{{#if title}}{{title}}{{else}}{{img}}{{/if}}' class='message--img' />
+	{{/each}}
+	<span class='message--time message--time-plank'>{{time}}</span>
 {{/if}}

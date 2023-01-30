@@ -1,3 +1,3 @@
-import TextButton from './button';
+import TextArrowButton from './button';
 
-export default TextButton;
+export default TextArrowButton;
