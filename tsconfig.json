@@ -1,10 +1,6 @@
 {
 	"compilerOptions": {
-		// "outDir": "dist",
-		// "rootDir": "src",
 		"target": "ESNext",
-		// "declaration": false,
-		// "module": "esnext",
 		"moduleResolution": "nodenext",
 		"noImplicitAny": true,
 		"noUnusedLocals": true,

@@ -11,6 +11,7 @@ import MessageBar from '../modules/chats/components/message_bar';
 import BaseInput from '../modules/forms/components/base_input';
 import IconButton from '../components/icon_button';
 import { checkMessage } from '../utils/validation';
+import { getRoute } from '../utils/router';
 
 let messageInput = new BaseInput({
 	events: {
@@ -64,6 +65,11 @@ export default {
 			href: '/profile',
 			'data-href': 'profile',
 			class: 'btn_textarrow',
+		},
+		events: {
+			click: (e: Event): void => {
+				getRoute(e);
+			},
 		},
 	}),
 	search: new Search({ attrs: { action: '#' } }),
