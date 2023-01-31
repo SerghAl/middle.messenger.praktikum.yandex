@@ -1,6 +1,6 @@
 .profile_page {
 	display: flex;
-	height: 100%;
+	min-height: inherit;
 }
 
 .profile {
@@ -9,6 +9,7 @@
 	flex-grow: 1;
 	align-items: center;
 	justify-content: center;
+	padding: 20px 0;
 }
 
 .profile--display_name {
