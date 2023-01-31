@@ -7,6 +7,13 @@ class MessageBar extends Component {
 		super('div', { ...props, attrs: { class: 'message_bar' } });
 	}
 
+	addEvents(): void {
+		let input = this._element.querySelector('form');
+		if (input) {
+			super.addEvents(input);
+		}
+	}
+
 	render() {
 		return this.compile(tpl);
 	}

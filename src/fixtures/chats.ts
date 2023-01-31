@@ -1,5 +1,6 @@
 import personImg from '../../static/images/person1.png';
 import attachIcon from '../../static/images/clip.svg';
+import arrowIcon from '../../static/images/arrow.svg';
 
 import Chat from '../modules/chats';
 import Search from '../modules/search';
@@ -7,8 +8,55 @@ import TextArrowButton from '../modules/chats/components/button';
 import ProfileBar from '../modules/chats/components/profile_bar';
 import MessageBar from '../modules/chats/components/message_bar';
 
+import BaseInput from '../modules/forms/components/base_input';
+import IconButton from '../components/icon_button';
+import { checkMessage } from '../utils/validation';
+
+let messageInput = new BaseInput({
+	events: {
+		blur: () => {
+			messageInput.checkValidation();
+		},
+	},
+	validator: checkMessage,
+	attrs: {
+		name: 'message',
+		type: 'text',
+		class: 'message_bar--input',
+	},
+});
+
+let messageBarSettings: Props = {
+	method: 'POST',
+	action: '/fakeapi/v1/chat',
+	messageInput,
+	attachBtn: new IconButton({
+		src: attachIcon,
+		attrs: {
+			class: 'message_bar--attach_btn',
+		},
+		alt: 'Прикрепить файл',
+	}),
+	sendBtn: new IconButton({
+		src: arrowIcon,
+		attrs: {
+			class: 'message_bar--submit',
+		},
+		alt: 'Отправить сообщение',
+	}),
+	events: {
+		submit: (e: Event): void => {
+			e.preventDefault();
+			messageInput.checkValidation();
+
+			let formData = new FormData(<HTMLFormElement>e.target);
+			console.log('Message form: ', Object.fromEntries(formData.entries()));
+		},
+	},
+};
+
 export default {
-	messageBar: new MessageBar({ attachIcon }),
+	messageBar: new MessageBar(messageBarSettings),
 	profileBar: new ProfileBar({ img: personImg, title: 'Андрей' }),
 	profileBtn: new TextArrowButton({
 		title: 'Профиль',

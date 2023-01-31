@@ -4,7 +4,37 @@ import Component from '../../../../utils/component';
 
 class Input extends Component {
 	constructor(props: { [key: PropertyKey]: any }) {
-		super('div', { ...props, attrs: { class: 'input--container' } });
+		let styles = 'input--container';
+
+		if (props.attrs && props.attrs.class) {
+			styles += props.attrs.class ? ` ${props.attrs.class}` : '';
+		}
+
+		super('div', {
+			...props,
+			attrs: { class: styles },
+		});
+	}
+
+	addEvents(): void {
+		let input = this._element.querySelector('input');
+		if (input) {
+			super.addEvents(input);
+		}
+	}
+
+	checkValidation() {
+		if (this.props.validator) {
+			let input = this._element.querySelector('input');
+
+			let isValid = this.props.validator(input.value);
+
+			if (!isValid.result) {
+				this.setProps({ hint: isValid.error, value: input.value });
+			} else {
+				this.setProps({ hint: false, value: input.value });
+			}
+		}
 	}
 
 	render() {

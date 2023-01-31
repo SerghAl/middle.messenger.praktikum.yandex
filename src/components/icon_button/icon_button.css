@@ -1,0 +1,13 @@
+.icon_btn {
+	flex-shrink: 0;
+	padding: 0;
+
+	border: none;
+
+	background: none;
+	appearance: none;
+}
+
+.icon_btn:hover {
+	cursor: pointer;
+}

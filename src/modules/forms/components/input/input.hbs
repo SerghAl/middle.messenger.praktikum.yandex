@@ -1,4 +1,6 @@
+{{#if label}}
 <label class='input--label' for='id-{{name}}'>{{label}}</label>
+{{/if}}
 <input
 	class='input {{#if error}}input-error{{/if}}'
 	id='id-{{name}}'
@@ -8,5 +10,5 @@
 	placeholder='{{placeholder}}'
 />
 {{#if hint}}
-	<span class='input--hint {{#if error}}input--hint-error{{/if}}'>{{hint}}</span>
+	<span class='input--hint input--hint-error'>{{hint}}</span>
 {{/if}}

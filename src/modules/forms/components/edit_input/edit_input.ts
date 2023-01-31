@@ -21,9 +21,9 @@ class EditInput extends Component {
 			let isValid = this.props.validator(input.value);
 
 			if (!isValid.result) {
-				this.setProps({ tip: isValid.error, value: input.value });
+				this.setProps({ hint: isValid.error, value: input.value });
 			} else {
-				this.setProps({ tip: false, value: input.value });
+				this.setProps({ hint: false, value: input.value });
 			}
 		}
 	}

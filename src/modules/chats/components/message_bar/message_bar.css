@@ -8,28 +8,12 @@
 	border-top: 1px solid white;
 }
 
-.message_bar--attach_btn,
-.message_bar--submit {
-	flex-shrink: 0;
-	padding: 0;
-
-	border: none;
-
-	background: none;
-	appearance: none;
-}
-
 .message_bar--attach_btn {
 	margin-right: 10px;
 }
 
 .message_bar--submit {
 	margin-left: 10px;
-}
-
-.message_bar--attach_btn:hover,
-.message_bar--submit:hover {
-	cursor: pointer;
 }
 
 .message_bar--form {
