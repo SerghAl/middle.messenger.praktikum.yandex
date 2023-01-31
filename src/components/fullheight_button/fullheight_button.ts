@@ -5,12 +5,17 @@ import Component from '../../utils/component';
 
 class FullheightButton extends Component {
 	constructor(props: Props) {
+		let styles = 'fullheight_btn';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
 		super('a', {
 			...props,
 			attrs: {
-				href: '/chat',
-				'data-href': 'chat',
-				class: 'fullheight_btn',
+				...props.attrs,
+				class: styles,
 			},
 		});
 	}

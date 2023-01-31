@@ -1,7 +1,7 @@
 import EventBus from './event_bus';
 import { nanoid } from '../../node_modules/nanoid/index';
 
-class Component {
+abstract class Component {
 	eventBus;
 	props;
 	children;
@@ -145,7 +145,7 @@ class Component {
 		this.addEvents();
 	}
 
-	render() {}
+	abstract render(): DocumentFragment;
 
 	_createStub(id: string): string {
 		return `<div data-id=${id}></div>`;
@@ -153,7 +153,7 @@ class Component {
 
 	_replaceStub(
 		replaceId: string,
-		replaceEl: HTMLElement,
+		replaceEl: Component,
 		replaceTarget: DocumentFragment
 	): void {
 		let stub = replaceTarget.querySelector(`[data-id="${replaceId}"]`);
@@ -163,7 +163,7 @@ class Component {
 	}
 
 	compile(tpl: Function, ...data: any): DocumentFragment {
-		let children: { [key: string]: string } = {};
+		let children: { [key: PropertyKey]: string | string[] } = {};
 		let fragment = document.createElement('template');
 
 		Object.entries(this.children).forEach(([key, value]) => {

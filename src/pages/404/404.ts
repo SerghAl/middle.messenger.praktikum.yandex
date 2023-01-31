@@ -3,8 +3,14 @@ import './404.css';
 import Component from '../../utils/component';
 
 class UnfoundView extends Component {
-	constructor(props: { [key: PropertyKey]: string }) {
-		super('main', { ...props, attrs: { class: 'unfound_page' } });
+	constructor(props: Props) {
+		let styles = 'unfound_page';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
+		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {

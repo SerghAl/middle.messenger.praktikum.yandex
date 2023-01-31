@@ -4,7 +4,13 @@ import Component from '../../utils/component';
 
 class ChatView extends Component {
 	constructor(props: Props) {
-		super('main', { ...props, attrs: { class: 'chat_page main_bg' } });
+		let styles = 'chat_page main_bg';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
+		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {

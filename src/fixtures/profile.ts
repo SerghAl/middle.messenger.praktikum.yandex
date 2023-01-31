@@ -177,6 +177,10 @@ export default {
 				getRoute(e);
 			},
 		},
+		attrs: {
+			href: '/chat',
+			'data-href': 'chat',
+		},
 	}),
 	displayName: 'Иван',
 	profileImageForm: new ImageForm({

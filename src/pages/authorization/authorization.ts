@@ -4,9 +4,15 @@ import Component from '../../utils/component';
 
 class AuthorizationView extends Component {
 	constructor(props: { [key: PropertyKey]: any }) {
+		let styles = 'auth_page main_bg';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
 		super('main', {
 			...props,
-			attrs: { class: 'auth_page main_bg' },
+			attrs: { ...props.attrs, class: styles },
 		});
 	}
 

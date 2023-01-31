@@ -4,7 +4,13 @@ import Component from '../../utils/component';
 
 class ErrorView extends Component {
 	constructor(props: Props) {
-		super('main', { ...props, attrs: { class: 'error_page' } });
+		let styles = 'error_page';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
+		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {

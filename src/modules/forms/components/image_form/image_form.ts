@@ -13,7 +13,9 @@ class ImageForm extends Component {
 					change: (e: Event) => {
 						e.preventDefault();
 
-						let preview = document.querySelector('.image_form--img');
+						let preview = <HTMLImageElement>(
+							document.querySelector('.image_form--img')
+						);
 						if (preview) {
 							preview.src = URL.createObjectURL(this._element.files[0]);
 						}

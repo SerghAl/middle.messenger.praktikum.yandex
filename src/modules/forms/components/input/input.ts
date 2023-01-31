@@ -27,12 +27,14 @@ class Input extends Component {
 		if (this.props.validator) {
 			let input = this._element.querySelector('input');
 
-			let isValid = this.props.validator(input.value);
+			if (input) {
+				let isValid = this.props.validator(input.value);
 
-			if (!isValid.result) {
-				this.setProps({ hint: isValid.error, value: input.value });
-			} else {
-				this.setProps({ hint: false, value: input.value });
+				if (!isValid.result) {
+					this.setProps({ hint: isValid.error, value: input.value });
+				} else {
+					this.setProps({ hint: false, value: input.value });
+				}
 			}
 		}
 	}

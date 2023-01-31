@@ -3,7 +3,13 @@ import './search.css';
 import Component from '../../utils/component';
 class Search extends Component {
 	constructor(props: Props) {
-		super('form', { ...props, attrs: { class: 'search', ...props.attrs } });
+		let styles = 'search';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
+		super('form', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {

@@ -5,7 +5,13 @@ import Component from '../../utils/component';
 
 class ProfileView extends Component {
 	constructor(props: Props) {
-		super('main', { ...props, attrs: { class: 'profile_page main_bg' } });
+		let styles = 'profile_page main_bg';
+
+		if (props.attrs && props.attrs.class) {
+			styles += ` ${props.attrs.class}`;
+		}
+
+		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {

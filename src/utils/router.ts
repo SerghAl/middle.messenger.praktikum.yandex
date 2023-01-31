@@ -19,7 +19,7 @@ export const ROUTES = {
 	REGISTRATION: registrationView,
 };
 
-export const setRoute = (View, data: any): void => {
+export const setRoute = (View, data: Props): void => {
 	let root = document.getElementById('app');
 
 	if (root) {
@@ -31,13 +31,8 @@ export const setRoute = (View, data: any): void => {
 
 export const getRoute = (e: Event): void => {
 	e.preventDefault();
-	let route;
-
-	if (e.lastTarget) {
-		route = e.lastTarget.dataset.href;
-	} else {
-		route = e.target.dataset.href;
-	}
+	let target = <HTMLElement>e.target;
+	let route = target.dataset.href;
 
 	switch (route) {
 		case 'chat':
@@ -47,10 +42,10 @@ export const getRoute = (e: Event): void => {
 			setRoute(ROUTES.PROFILE, profileData);
 			break;
 		case 'error':
-			setRoute(ROUTES.ERROR);
+			setRoute(ROUTES.ERROR, {});
 			break;
 		case 'unfound':
-			setRoute(ROUTES.UNFOUND);
+			setRoute(ROUTES.UNFOUND, {});
 			break;
 		case 'authorization':
 			setRoute(ROUTES.AUTHORIZATION, authData);
@@ -59,7 +54,7 @@ export const getRoute = (e: Event): void => {
 			setRoute(ROUTES.REGISTRATION, regData);
 			break;
 		default:
-			setRoute(ROUTES.CHAT);
+			setRoute(ROUTES.CHAT, chatsData);
 			break;
 	}
 };
