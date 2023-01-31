@@ -7,6 +7,13 @@ class Form extends Component {
 		super('div', { ...props, attr: { class: 'form--container' } });
 	}
 
+	addEvents(): void {
+		let input = this._element.querySelector('form');
+		if (input) {
+			super.addEvents(input);
+		}
+	}
+
 	render() {
 		return this.compile(tpl, this.props);
 	}

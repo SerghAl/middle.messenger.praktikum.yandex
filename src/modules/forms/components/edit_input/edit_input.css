@@ -1,10 +1,16 @@
 .edit_input--container {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	flex-direction: column;
 	padding: 10px 0;
 
 	border-bottom: 1px solid var(--color-secondary);
+}
+
+.edit_input--inner_container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
 }
 
 .edit_input {
@@ -27,4 +33,10 @@
 .edit_input--label {
 	color: var(--color-primary);
 	font-size: var(--font-base);
+}
+
+.edit_input--tip {
+	color: var(--color-accent);
+	font-size: var(--font-xs);
+	text-align: right;
 }

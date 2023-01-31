@@ -1,9 +1,14 @@
-<label class='edit_input--label' for='id-{{name}}'>{{label}}</label>
-<input
-	class='edit_input'
-	id='id-{{name}}'
-	name='{{name}}'
-	type='{{type}}'
-	value='{{value}}'
-	placeholder='{{placeholder}}'
-/>
+<div class='edit_input--inner_container'>
+	<label class='edit_input--label' for='id-{{name}}'>{{label}}</label>
+	<input
+		class='edit_input'
+		id='id-{{name}}'
+		name='{{name}}'
+		type='{{type}}'
+		value='{{value}}'
+		placeholder='{{placeholder}}'
+	/>
+</div>
+{{#if tip}}
+	<p class='edit_input--tip'>{{tip}}</p>
+{{/if}}

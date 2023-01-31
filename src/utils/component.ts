@@ -23,13 +23,12 @@ class Component {
 			propsAndChildren,
 		};
 		this._id = nanoid();
+		this.eventBus = new EventBus();
 
 		let { props, children } = this._getPropsAndChildren(propsAndChildren);
 
 		this.props = this._makePropsProxy(props);
 		this.children = children;
-
-		this.eventBus = new EventBus();
 
 		this._registerEvents();
 		this.eventBus.emit(Component.EVENTS.INIT);
@@ -195,6 +194,8 @@ class Component {
 	}
 
 	_makePropsProxy(props: Props): Props {
+		let eventBus = this.eventBus;
+
 		return new Proxy(props, {
 			get: (target: Props, prop: PropertyKey): any => {
 				const value = target[prop];
@@ -203,7 +204,7 @@ class Component {
 			set(target: Props, prop: PropertyKey, value: any): boolean {
 				target[prop] = value;
 
-				this.eventBus.emit(Component.EVENTS.FLOW_CDU, { ...target }, target);
+				eventBus.emit(Component.EVENTS.FLOW_CDU, { ...target }, target);
 				return true;
 			},
 			deleteProperty(target: Props, prop: PropertyKey): boolean {
