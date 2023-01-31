@@ -1,0 +1,14 @@
+.base_input {
+	width: 100%;
+	padding: 8px;
+
+	background: white;
+
+	color: var(--color-primary);
+	font-size: var(--font-base);
+	appearance: none;
+}
+
+.base_input-error {
+	color: var(--color-accent);
+}
