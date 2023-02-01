@@ -1,3 +1,6 @@
+type RequestOptions = { [key: string]: any };
+type HTTPMethod = (url: string, options?: RequestOptions) => Promise<unknown>;
+
 const METHODS = {
 	GET: 'GET',
 	POST: 'POST',
@@ -5,15 +8,13 @@ const METHODS = {
 	DELETE: 'DELETE',
 };
 
-type RequestOptions = { [key: string]: any };
-
 function queryStringify(data: { [key: PropertyKey]: string | number }) {
 	let newData = Object.keys(data).map((key) => `${key}=${data[key]}`);
 	return `?${newData.join('&')}`;
 }
 
 class HTTPTransport {
-	get = (url: string, options: RequestOptions = {}) => {
+	get: HTTPMethod = (url, options = {}) => {
 		return this.request(
 			url,
 			{ ...options, method: METHODS.GET },
@@ -21,7 +22,7 @@ class HTTPTransport {
 		);
 	};
 
-	post = (url: string, options: RequestOptions = {}) => {
+	post: HTTPMethod = (url, options = {}) => {
 		return this.request(
 			url,
 			{ ...options, method: METHODS.POST },
@@ -29,7 +30,7 @@ class HTTPTransport {
 		);
 	};
 
-	put = (url: string, options: RequestOptions = {}) => {
+	put: HTTPMethod = (url, options = {}) => {
 		return this.request(
 			url,
 			{ ...options, method: METHODS.PUT },
@@ -37,7 +38,7 @@ class HTTPTransport {
 		);
 	};
 
-	delete = (url: string, options: RequestOptions = {}) => {
+	delete: HTTPMethod = (url, options = {}) => {
 		return this.request(
 			url,
 			{ ...options, method: METHODS.DELETE },
