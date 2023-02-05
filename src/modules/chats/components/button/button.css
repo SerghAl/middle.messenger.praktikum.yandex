@@ -1,4 +1,4 @@
-.chat_controls--arrow {
+.btn_textarrow--arrow {
 	display: inline-block;
 	margin-left: 5px;
 	padding: 2px;
@@ -9,13 +9,7 @@
 	border-width: 0 1px 1px 0;
 }
 
-.chat_controls {
-	display: flex;
-	justify-content: flex-end;
-	margin-bottom: 24px;
-}
-
-.chat_controls--btn {
+.btn_textarrow {
 	display: flex;
 	align-items: center;
 
@@ -29,6 +23,6 @@
 	appearance: none;
 }
 
-.chat_controls--btn:hover {
+.btn_textarrow:hover {
 	cursor: pointer;
 }

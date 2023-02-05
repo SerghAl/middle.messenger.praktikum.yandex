@@ -1,4 +1,4 @@
-<div class='edit_input--container'>
+<div class='edit_input--inner_container'>
 	<label class='edit_input--label' for='id-{{name}}'>{{label}}</label>
 	<input
 		class='edit_input'
@@ -9,3 +9,6 @@
 		placeholder='{{placeholder}}'
 	/>
 </div>
+{{#if hint}}
+	<p class='edit_input--hint'>{{hint}}</p>
+{{/if}}
