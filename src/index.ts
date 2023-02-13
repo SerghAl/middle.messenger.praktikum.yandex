@@ -5,6 +5,11 @@ import chatsData from './fixtures/chats';
 import dialogueData from './fixtures/dialogue';
 
 export const dispatcher = new EventEmitter();
+import Router from './utils/router';
+import { ROUTES } from './utils/router';
+
+const router = new Router('.app');
+router.use('/', ROUTES.AUTHORIZATION);
 
 dispatcher.on('loadChat', (): void => {
 	let dialogue = dialogueData;
@@ -21,4 +26,6 @@ navLinks.forEach((link) => {
 	});
 });
 
-setRoute(ROUTES.AUTHORIZATION, authData);
+router.go('/');
+
+// setRoute(ROUTES.AUTHORIZATION, authData);
