@@ -4,7 +4,7 @@ import EditInput from '../modules/forms/components/edit_input';
 import profileImage from '../../static/images/profile.png';
 import Button from '../components/button';
 import FullheightButton from '../components/fullheight_button';
-import { getRoute } from '../utils/router';
+
 import {
 	checkName,
 	checkLogin,
@@ -12,6 +12,9 @@ import {
 	checkPassword,
 	checkPhone,
 } from '../utils/validation';
+import { Router } from '../utils/Router/index';
+
+let router = new Router('.app');
 
 let firstNameInput = new EditInput({
 	type: 'text',
@@ -174,7 +177,8 @@ export default {
 	backBtn: new FullheightButton({
 		events: {
 			click: (e: Event): void => {
-				getRoute(e);
+				e.preventDefault();
+				router.go(`/${e.target.dataset.href}`);
 			},
 		},
 		attrs: {

@@ -13,10 +13,16 @@ function queryStringify(data: { [key: PropertyKey]: string | number }) {
 	return `?${newData.join('&')}`;
 }
 
-class HTTPTransport {
+export default class HTTPTransport {
+	BASE_URL: string;
+
+	constructor(baseUrl: string) {
+		this.BASE_URL = baseUrl;
+	}
+
 	get: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.GET },
 			options.timeout
 		);
@@ -24,7 +30,7 @@ class HTTPTransport {
 
 	post: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.POST },
 			options.timeout
 		);
@@ -32,7 +38,7 @@ class HTTPTransport {
 
 	put: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.PUT },
 			options.timeout
 		);
@@ -40,7 +46,7 @@ class HTTPTransport {
 
 	delete: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.DELETE },
 			options.timeout
 		);
@@ -48,7 +54,6 @@ class HTTPTransport {
 
 	request = (url: string, options: RequestOptions = {}, timeout = 5000) => {
 		const { headers = {}, method, data } = options;
-
 		return new Promise(function (resolve, reject): void {
 			if (!method) {
 				reject('No method');
@@ -59,6 +64,8 @@ class HTTPTransport {
 			const isGet = method === METHODS.GET;
 
 			xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+
+			xhr.withCredentials = true;
 
 			Object.keys(headers).forEach((key) => {
 				xhr.setRequestHeader(key, headers[key]);
@@ -77,7 +84,7 @@ class HTTPTransport {
 			if (isGet || !data) {
 				xhr.send();
 			} else {
-				xhr.send(data);
+				xhr.send(JSON.stringify(data));
 			}
 		});
 	};

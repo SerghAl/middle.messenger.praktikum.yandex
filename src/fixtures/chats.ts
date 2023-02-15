@@ -11,7 +11,9 @@ import MessageBar from '../modules/chats/components/message_bar';
 import BaseInput from '../modules/forms/components/base_input';
 import IconButton from '../components/icon_button';
 import { checkMessage } from '../utils/validation';
-import { getRoute } from '../utils/router';
+import { Router } from '../utils/Router/index';
+
+const router = new Router('.app');
 
 let messageInput = new BaseInput({
 	events: {
@@ -68,7 +70,8 @@ export default {
 		},
 		events: {
 			click: (e: Event): void => {
-				getRoute(e);
+				e.preventDefault();
+				router.go(`/${e.target.dataset.href}`);
 			},
 		},
 	}),

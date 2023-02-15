@@ -3,6 +3,7 @@ import Input from '../modules/forms/components/input';
 import Button from '../components/button';
 import TextButton from '../components/text_button';
 import { checkLogin, checkPassword } from '../utils/validation';
+import AuthAPI from '../api/auth_api';
 
 let loginInput = new Input({
 	type: 'text',
@@ -46,6 +47,8 @@ let authFormSettings: Props = {
 			let formData = new FormData(<HTMLFormElement>e.target);
 
 			console.log('Auth form: ', Object.fromEntries(formData.entries()));
+			// AuthAPI.logOut();
+			AuthAPI.signIn(Object.fromEntries(formData.entries()));
 		},
 	},
 	controls: [

@@ -17,6 +17,10 @@ class ProfileView extends Component {
 	render() {
 		return this.compile(tpl);
 	}
+
+	hide() {
+		this.getContent().outerHTML = '';
+	}
 }
 
 export default ProfileView;

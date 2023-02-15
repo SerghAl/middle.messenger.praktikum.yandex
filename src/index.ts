@@ -1,31 +1,34 @@
-import { getRoute, setRoute, ROUTES } from './utils/router';
-import EventEmitter from './utils/event_bus';
+// import EventEmitter from './utils/event_bus';
 import authData from './fixtures/authorization';
 import chatsData from './fixtures/chats';
 import dialogueData from './fixtures/dialogue';
+import profileData from './fixtures/profile';
+import regData from './fixtures/registration';
 
-export const dispatcher = new EventEmitter();
-import Router from './utils/router';
-import { ROUTES } from './utils/router';
+// export const dispatcher = new EventEmitter();
+import { Router, Route, ROUTES } from './utils/Router/index';
 
 const router = new Router('.app');
-router.use('/', ROUTES.AUTHORIZATION);
 
-dispatcher.on('loadChat', (): void => {
-	let dialogue = dialogueData;
+router
+	.use('/', ROUTES.AUTHORIZATION, authData)
+	.use('/authorization', ROUTES.AUTHORIZATION, authData)
+	.use('/registration', ROUTES.REGISTRATION, regData)
+	.use('/profile', ROUTES.PROFILE, profileData)
+	.use('/chat', ROUTES.CHAT, chatsData)
+	.use('/unfound', ROUTES.UNFOUND, {})
+	.use('/error', ROUTES.ERROR, {})
+	.start();
 
-	setRoute(ROUTES.CHAT, { ...chatsData, dialogue });
-});
+// dispatcher.on('loadChat', (): void => {
+// 	let dialogue = dialogueData;
 
 let navLinks = Array.from(document.querySelectorAll('.main_nav--link'));
 
 navLinks.forEach((link) => {
 	link.addEventListener('click', (e: Event) => {
 		e.preventDefault();
-		getRoute(e);
+		console.log(`/${e.target.dataset.href}`);
+		router.go(`/${e.target.dataset.href}`);
 	});
 });
-
-router.go('/');
-
-// setRoute(ROUTES.AUTHORIZATION, authData);

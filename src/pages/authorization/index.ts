@@ -1,3 +1,4 @@
 import AuthorizationView from './authorization';
+import { connect } from '../../utils/Store';
 
-export default AuthorizationView;
+export default connect(AuthorizationView, (state: Props) => {});

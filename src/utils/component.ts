@@ -218,11 +218,11 @@ abstract class Component {
 	}
 
 	show() {
-		this.getContent().style.display = 'block';
+		this.getContent().classList.remove('hidden');
 	}
 
 	hide() {
-		this.getContent().style.display = 'none';
+		this.getContent().classList.add('hidden');
 	}
 }
 
