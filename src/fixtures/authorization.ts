@@ -4,12 +4,16 @@ import Button from '../components/button';
 import TextButton from '../components/text_button';
 import { checkLogin, checkPassword } from '../utils/validation';
 import AuthAPI from '../api/auth_api';
+import { setUserInfo } from '../utils/Store/Actions';
+import { Router } from '../utils/Router';
+
+let router = new Router('.app');
 
 let loginInput = new Input({
 	type: 'text',
 	label: 'Логин',
 	name: 'login',
-	value: 'ivanivanov',
+	value: '',
 	validator: checkLogin,
 	events: {
 		blur: (): void => {
@@ -22,7 +26,7 @@ let passwordInput = new Input({
 	type: 'password',
 	label: 'Пароль',
 	name: 'password',
-	value: '••••••••••••',
+	value: '',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -36,7 +40,7 @@ let authFormSettings: Props = {
 	height: 'm',
 	innerTitle: 'Вход',
 	method: 'POST',
-	action: '/fakeapi/v1/profile',
+	action: '/',
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
@@ -46,9 +50,20 @@ let authFormSettings: Props = {
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 
-			console.log('Auth form: ', Object.fromEntries(formData.entries()));
-			// AuthAPI.logOut();
-			AuthAPI.signIn(Object.fromEntries(formData.entries()));
+			AuthAPI.signIn(Object.fromEntries(formData.entries()))
+				.then((response) => {
+					console.log('THEN: ', response);
+				})
+				.then(() => {
+					AuthAPI.getUserInfo().then(({ response }: Props) => {
+						console.log('DATA', response);
+						setUserInfo(JSON.parse(response));
+						router.go('/chat');
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		},
 	},
 	controls: [

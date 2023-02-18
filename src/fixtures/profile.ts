@@ -13,14 +13,21 @@ import {
 	checkPhone,
 } from '../utils/validation';
 import { Router } from '../utils/Router/index';
+import AuthAPI from '../api/auth_api';
+import { getUserInfo } from '../utils/Store/Actions';
+import Store from '../utils/Store/Store';
 
+let store = new Store();
 let router = new Router('.app');
+
+let userInfo = getUserInfo();
+console.log(userInfo);
 
 let firstNameInput = new EditInput({
 	type: 'text',
 	label: 'Имя',
 	name: 'first_name',
-	value: 'Иван',
+	value: userInfo.first_name,
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -33,7 +40,7 @@ let secondNameInput = new EditInput({
 	type: 'text',
 	label: 'Фамилия',
 	name: 'second_name',
-	value: 'Иванов',
+	value: userInfo.second_name,
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -45,7 +52,7 @@ let secondNameInput = new EditInput({
 let emailInput = new EditInput({
 	type: 'email',
 	label: 'Почта',
-	name: 'email',
+	name: userInfo.email,
 	value: 'pochta@yandex.ru',
 	validator: checkMail,
 	events: {
@@ -59,7 +66,7 @@ let loginInput = new EditInput({
 	type: 'text',
 	label: 'Логин',
 	name: 'login',
-	value: 'ivanivanov',
+	value: userInfo.login,
 	validator: checkLogin,
 	events: {
 		blur: (): void => {
@@ -79,7 +86,7 @@ let phoneInput = new EditInput({
 	type: 'tel',
 	label: 'Телефон',
 	name: 'phone',
-	value: '+79099673030',
+	value: userInfo.phone,
 	validator: checkPhone,
 	events: {
 		blur: (): void => {
@@ -197,4 +204,18 @@ export default {
 	}),
 	profileForm: new Form(profileFormSettings),
 	profilePasswordForm: new Form(profilePasswordFormSettings),
+	logoutBtn: new Button({
+		title: 'Выйти из профиля',
+		type: 'accent',
+		events: {
+			click: (e: Event) => {
+				e.preventDefault();
+
+				AuthAPI.logOut().then(() => {
+					store.removeState();
+					router.go('/');
+				});
+			},
+		},
+	}),
 };

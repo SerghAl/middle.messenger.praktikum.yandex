@@ -28,7 +28,6 @@ let navLinks = Array.from(document.querySelectorAll('.main_nav--link'));
 navLinks.forEach((link) => {
 	link.addEventListener('click', (e: Event) => {
 		e.preventDefault();
-		console.log(`/${e.target.dataset.href}`);
 		router.go(`/${e.target.dataset.href}`);
 	});
 });

@@ -1,7 +1,9 @@
 import tpl from './chat.hbs';
 import './chat.css';
 import Component from '../../utils/component';
+import { getUserInfo } from '../../utils/Store/Actions';
 
+console.log(getUserInfo());
 class ChatView extends Component {
 	constructor(props: Props) {
 		let styles = 'chat_page main_bg';

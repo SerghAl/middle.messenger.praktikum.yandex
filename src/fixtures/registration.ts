@@ -9,12 +9,16 @@ import {
 	checkPassword,
 	checkPhone,
 } from '../utils/validation';
+import AuthAPI from '../api/auth_api';
+import { Router } from '../utils/Router';
+
+let router = new Router('.app');
 
 let emailInput = new Input({
 	type: 'email',
 	label: 'Почта',
 	name: 'email',
-	value: 'pochta@yandex.ru',
+	placeholder: 'pochta@yandex.ru',
 	validator: checkMail,
 	events: {
 		blur: (): void => {
@@ -27,7 +31,7 @@ let loginInput = new Input({
 	type: 'text',
 	label: 'Логин',
 	name: 'login',
-	value: 'ivanivanov',
+	placeholder: 'ivanivanov',
 	validator: checkLogin,
 	events: {
 		blur: (): void => {
@@ -40,7 +44,7 @@ let firstNameInput = new Input({
 	type: 'text',
 	label: 'Имя',
 	name: 'first_name',
-	value: 'Иван',
+	placeholder: 'Иван',
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -53,7 +57,7 @@ let secondNameInput = new Input({
 	type: 'text',
 	label: 'Фамилия',
 	name: 'second_name',
-	value: 'Иванов',
+	placeholder: 'Иванов',
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -66,14 +70,14 @@ let chatNameInput = new Input({
 	type: 'text',
 	label: 'Имя в чате',
 	name: 'display_name',
-	value: 'Иван',
+	placeholder: 'Иван',
 });
 
 let phoneInput = new Input({
 	type: 'tel',
 	label: 'Телефон',
 	name: 'phone',
-	value: '+7 (909) 967 30 30',
+	placeholder: '89099673030',
 	validator: checkPhone,
 	events: {
 		blur: (): void => {
@@ -86,7 +90,6 @@ let passwordInput = new Input({
 	type: 'password',
 	label: 'Пароль',
 	name: 'password',
-	value: '••••••••••••',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -99,7 +102,6 @@ let repeatPasswordInput = new Input({
 	type: 'password',
 	label: 'Пароль (ещё раз)',
 	name: 'password',
-	value: '••••••••••••',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -146,10 +148,13 @@ let regFormSettings: Props = {
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 
-			console.log(
-				'Registration form: ',
-				Object.fromEntries(formData.entries())
-			);
+			AuthAPI.signUp(Object.fromEntries(formData.entries()))
+				.then(() => {
+					router.go('/chats');
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		},
 	},
 };
