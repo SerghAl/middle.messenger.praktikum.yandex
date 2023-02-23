@@ -1,5 +1,6 @@
 import Component from '../component';
 import { Route } from '.';
+import AuthAPI from '../../api/auth_api';
 
 export default class Router {
 	static __instance: Router;

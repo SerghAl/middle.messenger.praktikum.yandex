@@ -14,7 +14,7 @@ class EditInput extends Component {
 		}
 	}
 
-	checkValidation() {
+	checkValidation(): boolean {
 		if (this.props.validator) {
 			let input = this._element.querySelector('input');
 
@@ -23,11 +23,16 @@ class EditInput extends Component {
 
 				if (!isValid.result) {
 					this.setProps({ hint: isValid.error, value: input.value });
+					return false;
 				} else {
 					this.setProps({ hint: false, value: input.value });
+					return true;
 				}
 			}
+
+			return false;
 		}
+		return true;
 	}
 
 	render() {

@@ -2,7 +2,7 @@ import EventBus from '../event_bus';
 
 export default class Store extends EventBus {
 	static EVENTS = {
-		UPDATE: '',
+		UPDATE: 'STORE-UPDATE',
 	};
 	static _instance: Store | null;
 	static STORE_NAME = 'globalStore';

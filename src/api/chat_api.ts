@@ -6,53 +6,38 @@ const chatAPIInstance = new HTTPTransport(
 );
 
 export default class ChatAPI extends BaseAPI {
-	getChats() {
+	static getChats() {
 		return chatAPIInstance.get('/');
 	}
 
-	createChat(title: string) {
-		return chatAPIInstance.post('/chats', {
+	static createChat(data: Props) {
+		return chatAPIInstance.post('/', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			data: {
-				title,
-			},
+			data: JSON.stringify(data),
 		});
 	}
 
-	deleteChat(chatId: number) {
-		return chatAPIInstance.delete('/chats', {
+	static deleteChat(data: Props) {
+		return chatAPIInstance.delete('/', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			data: {
-				chatId,
-			},
+			data: JSON.stringify(data),
 		});
 	}
 
-	getChatSendFiles(chatId: number) {
-		return chatAPIInstance.get(`/chats/${chatId}/files`);
+	static getChatSendFiles(chatId: number) {
+		return chatAPIInstance.get(`/${chatId}/files`);
 	}
 
-	getArchivedChats() {
-		return chatAPIInstance.get('/chats/archive');
+	static getArchivedChats() {
+		return chatAPIInstance.get('/archive');
 	}
 
-	archiveChat(chatId: number) {
-		return chatAPIInstance.post('/chats/archive', {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			data: {
-				chatId,
-			},
-		});
-	}
-
-	unarchiveChat(chatId: number) {
-		return chatAPIInstance.post('/chats/unarchive', {
+	static archiveChat(chatId: number) {
+		return chatAPIInstance.post('/archive', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -62,26 +47,49 @@ export default class ChatAPI extends BaseAPI {
 		});
 	}
 
-	getCommonChat(chatId: number) {
-		return chatAPIInstance.get(`/chats/${chatId}/common`);
+	static unarchiveChat(chatId: number) {
+		return chatAPIInstance.post('/unarchive', {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: {
+				chatId,
+			},
+		});
 	}
 
-	getChatUsers(chatId: number) {
-		return chatAPIInstance.get(`/chats/${chatId}/users`);
+	static getCommonChat(chatId: number) {
+		return chatAPIInstance.get(`/${chatId}/common`);
 	}
 
-	getNewMessagesCount(chatId: number) {
-		return chatAPIInstance.get(`/chats/new/${chatId}`);
+	static getChatUsers(chatId: number) {
+		return chatAPIInstance.get(`/${chatId}/users`);
 	}
 
-	putChatsAvatar(data: FormData) {
-		return chatAPIInstance.put('/chats/avatar', {
+	static getNewMessagesCount(chatId: number) {
+		return chatAPIInstance.get(`/new/${chatId}`);
+	}
+
+	static putChatsAvatar(data: FormData) {
+		return chatAPIInstance.put('/avatar', {
 			data,
 		});
 	}
 
-	addUsersToChat(chatId: number, users: Array<number>) {
-		return chatAPIInstance.put('/chats/users', {
+	static addUsersToChat(chatId: number, users: Array<number>) {
+		return chatAPIInstance.put('/users', {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: JSON.stringify({
+				users,
+				chatId,
+			}),
+		});
+	}
+
+	static deleteUsersFromChat(chatId: number, users: Array<number>) {
+		return chatAPIInstance.put('/users', {
 			data: {
 				users,
 				chatId,
@@ -89,20 +97,7 @@ export default class ChatAPI extends BaseAPI {
 		});
 	}
 
-	deleteUsersFromChat(chatId: number, users: Array<number>) {
-		return chatAPIInstance.put('/chats/users', {
-			data: {
-				users,
-				chatId,
-			},
-		});
-	}
-
-	requestToken(id: number) {
-		return chatAPIInstance.put(`/chats/token/${id}`, {
-			data: {
-				id,
-			},
-		});
+	static requestToken(id: number) {
+		return chatAPIInstance.post(`/token/${id}`);
 	}
 }

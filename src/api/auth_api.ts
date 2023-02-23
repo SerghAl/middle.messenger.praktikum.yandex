@@ -11,7 +11,7 @@ export default class AuthAPI extends BaseAPI {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			data,
+			data: JSON.stringify(data),
 		});
 	}
 
@@ -20,7 +20,7 @@ export default class AuthAPI extends BaseAPI {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			data,
+			data: JSON.stringify(data),
 		});
 	}
 

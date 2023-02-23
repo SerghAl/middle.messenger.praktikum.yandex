@@ -14,208 +14,269 @@ import {
 } from '../utils/validation';
 import { Router } from '../utils/Router/index';
 import AuthAPI from '../api/auth_api';
-import { getUserInfo } from '../utils/Store/Actions';
+import UserAPI from '../api/user_api';
 import Store from '../utils/Store/Store';
+import { setUserInfo } from '../utils/Store/Actions';
+import { connect } from '../utils/Store';
 
-let store = new Store();
-let router = new Router('.app');
+export default function getProfileData(userInfo: any) {
+	let store = new Store();
+	let router = new Router('.app');
 
-let userInfo = getUserInfo();
-console.log(userInfo);
-
-let firstNameInput = new EditInput({
-	type: 'text',
-	label: 'Имя',
-	name: 'first_name',
-	value: userInfo.first_name,
-	validator: checkName,
-	events: {
-		blur: (): void => {
-			firstNameInput.checkValidation();
-		},
-	},
-});
-
-let secondNameInput = new EditInput({
-	type: 'text',
-	label: 'Фамилия',
-	name: 'second_name',
-	value: userInfo.second_name,
-	validator: checkName,
-	events: {
-		blur: (): void => {
-			secondNameInput.checkValidation();
-		},
-	},
-});
-
-let emailInput = new EditInput({
-	type: 'email',
-	label: 'Почта',
-	name: userInfo.email,
-	value: 'pochta@yandex.ru',
-	validator: checkMail,
-	events: {
-		blur: (): void => {
-			emailInput.checkValidation();
-		},
-	},
-});
-
-let loginInput = new EditInput({
-	type: 'text',
-	label: 'Логин',
-	name: 'login',
-	value: userInfo.login,
-	validator: checkLogin,
-	events: {
-		blur: (): void => {
-			loginInput.checkValidation();
-		},
-	},
-});
-
-let displayNameInput = new EditInput({
-	type: 'text',
-	label: 'Имя в чате',
-	name: 'display_name',
-	value: 'Иван',
-});
-
-let phoneInput = new EditInput({
-	type: 'tel',
-	label: 'Телефон',
-	name: 'phone',
-	value: userInfo.phone,
-	validator: checkPhone,
-	events: {
-		blur: (): void => {
-			phoneInput.checkValidation();
-		},
-	},
-});
-
-let oldPasswordInput = new EditInput({
-	type: 'password',
-	label: 'Старый пароль',
-	name: 'oldPassword',
-	placeholder: '********',
-	validator: checkPassword,
-	events: {
-		blur: (): void => {
-			oldPasswordInput.checkValidation();
-		},
-	},
-});
-
-let newPasswordInput = new EditInput({
-	type: 'password',
-	label: 'Новый пароль',
-	name: 'newPassword',
-	placeholder: '********',
-	validator: checkPassword,
-	events: {
-		blur: (): void => {
-			newPasswordInput.checkValidation();
-		},
-	},
-});
-
-let profilePasswordFormSettings = {
-	title: 'Изменить пароль',
-	method: 'POST',
-	action: '/fakeapi/v1/profile',
-	events: {
-		submit: (e: Event): void => {
-			e.preventDefault();
-			profilePasswordFormSettings.inputs.forEach((input) => {
-				input.checkValidation();
-			});
-
-			let formData = new FormData(<HTMLFormElement>e.target);
-
-			console.log('Password form: ', Object.fromEntries(formData.entries()));
-		},
-	},
-	controls: [
-		new Button({
-			title: 'Сохранить',
-			type: 'primary',
-			data: { key: 'href', value: 'error' },
-		}),
-	],
-	inputs: [oldPasswordInput, newPasswordInput],
-};
-
-let profileFormSettings = {
-	title: 'Личные данные',
-	method: 'POST',
-	action: '/fakeapi/v1/profile',
-	controls: [
-		new Button({
-			title: 'Сохранить',
-			type: 'primary',
-			data: { key: 'href', value: 'unfound' },
-		}),
-	],
-	events: {
-		submit: (e: Event): void => {
-			e.preventDefault();
-			profileFormSettings.inputs.forEach((input) => {
-				input.checkValidation();
-			});
-
-			let formData = new FormData(<HTMLFormElement>e.target);
-
-			console.log('Profile form: ', Object.fromEntries(formData.entries()));
-		},
-	},
-	inputs: [
-		emailInput,
-		loginInput,
-		firstNameInput,
-		secondNameInput,
-		displayNameInput,
-		phoneInput,
-	],
-};
-
-export default {
-	backBtn: new FullheightButton({
+	let firstNameInput = new EditInput({
+		type: 'text',
+		label: 'Имя',
+		name: 'first_name',
+		value: userInfo.first_name || '',
+		validator: checkName,
 		events: {
-			click: (e: Event): void => {
-				e.preventDefault();
-				router.go(`/${e.target.dataset.href}`);
+			blur: (): void => {
+				firstNameInput.checkValidation();
 			},
 		},
-		attrs: {
-			href: '/chat',
-			'data-href': 'chat',
+	});
+
+	let secondNameInput = new EditInput({
+		type: 'text',
+		label: 'Фамилия',
+		name: 'second_name',
+		value: userInfo.second_name || '',
+		validator: checkName,
+		events: {
+			blur: (): void => {
+				secondNameInput.checkValidation();
+			},
 		},
-	}),
-	displayName: 'Иван',
-	profileImageForm: new ImageForm({
+	});
+
+	let emailInput = new EditInput({
+		type: 'email',
+		label: 'Почта',
+		name: 'email',
+		value: userInfo.email || '',
+		validator: checkMail,
+		events: {
+			blur: (): void => {
+				emailInput.checkValidation();
+			},
+		},
+	});
+
+	let loginInput = new EditInput({
+		type: 'text',
+		label: 'Логин',
+		name: 'login',
+		value: userInfo.login || '',
+		validator: checkLogin,
+		events: {
+			blur: (): void => {
+				loginInput.checkValidation();
+			},
+		},
+	});
+
+	let EditInputClass = connect(EditInput, (store) => {
+		return {
+			value: store.userInfo?.display_name,
+		};
+	});
+
+	let displayNameInput = new EditInputClass({
+		type: 'text',
+		label: 'Имя в чате',
+		name: 'display_name',
+		value: userInfo.display_name || '',
+	});
+
+	let phoneInput = new EditInput({
+		type: 'tel',
+		label: 'Телефон',
+		name: 'phone',
+		value: userInfo.phone || '',
+		validator: checkPhone,
+		events: {
+			blur: (): void => {
+				phoneInput.checkValidation();
+			},
+		},
+	});
+
+	let oldPasswordInput = new EditInput({
+		type: 'password',
+		label: 'Старый пароль',
+		name: 'oldPassword',
+		placeholder: '********',
+		validator: checkPassword,
+		events: {
+			blur: (): void => {
+				oldPasswordInput.checkValidation();
+			},
+		},
+	});
+
+	let newPasswordInput = new EditInput({
+		type: 'password',
+		label: 'Новый пароль',
+		name: 'newPassword',
+		placeholder: '********',
+		validator: checkPassword,
+		events: {
+			blur: (): void => {
+				newPasswordInput.checkValidation();
+			},
+		},
+	});
+
+	let profilePasswordFormSettings = {
+		title: 'Изменить пароль',
+		method: 'POST',
+		action: '/fakeapi/v1/profile',
+		events: {
+			submit: (e: Event): void => {
+				e.preventDefault();
+
+				let formIsValid = true;
+
+				profileFormSettings.inputs.forEach((input) => {
+					formIsValid = input.checkValidation();
+				});
+
+				if (!formIsValid) {
+					return;
+				}
+
+				let formData = new FormData(<HTMLFormElement>e.target);
+
+				UserAPI.changePassword(Object.fromEntries(formData.entries())).then(
+					({ response }) => {
+						console.log(response);
+					}
+				);
+
+				console.log('Password form: ', Object.fromEntries(formData.entries()));
+			},
+		},
+		controls: [
+			new Button({
+				title: 'Сохранить',
+				type: 'primary',
+				data: { key: 'href', value: 'error' },
+			}),
+		],
+		inputs: [oldPasswordInput, newPasswordInput],
+	};
+
+	let profileFormSettings = {
+		title: 'Личные данные',
+		method: 'POST',
+		action: '/fakeapi/v1/profile',
+		controls: [
+			new Button({
+				title: 'Сохранить',
+				type: 'primary',
+				data: { key: 'href', value: 'unfound' },
+			}),
+		],
+		events: {
+			submit: (e: Event): void => {
+				e.preventDefault();
+
+				let formIsValid = true;
+
+				profileFormSettings.inputs.forEach((input) => {
+					formIsValid = input.checkValidation();
+				});
+
+				if (!formIsValid) {
+					return;
+				}
+
+				let formData = new FormData(<HTMLFormElement>e.target);
+
+				UserAPI.changeProfile(Object.fromEntries(formData.entries()))
+					.then(({ response }) => {
+						setUserInfo(JSON.parse(response));
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+
+				console.log('Profile form: ', Object.fromEntries(formData.entries()));
+			},
+		},
+		inputs: [
+			emailInput,
+			loginInput,
+			firstNameInput,
+			secondNameInput,
+			displayNameInput,
+			phoneInput,
+		],
+	};
+
+	let profileImageFormClass = connect(ImageForm, (store) => {
+		return {
+			value: `https://ya-praktikum.tech/api/v2/resources/${store.userInfo?.avatar}`,
+		};
+	});
+	let profileImageForm = new profileImageFormClass({
 		method: 'POST',
 		action: '/fakeapi/v1/profile',
 		type: 'file',
 		label: 'Аватар',
 		name: 'avatar',
-		value: profileImage,
-	}),
-	profileForm: new Form(profileFormSettings),
-	profilePasswordForm: new Form(profilePasswordFormSettings),
-	logoutBtn: new Button({
-		title: 'Выйти из профиля',
-		type: 'accent',
+		value:
+			userInfo && userInfo.avatar
+				? `https://ya-praktikum.tech/api/v2/resources/${userInfo.avatar}`
+				: profileImage,
 		events: {
-			click: (e: Event) => {
+			change: (e: Event) => {
 				e.preventDefault();
+				let formData = new FormData(
+					<HTMLFormElement>e.target.parentNode.parentNode
+				);
 
-				AuthAPI.logOut().then(() => {
-					store.removeState();
-					router.go('/');
-				});
+				UserAPI.changeAvatar(formData)
+					.then(({ response }) => {
+						setUserInfo(JSON.parse(response));
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			},
 		},
-	}),
-};
+	});
+
+	return {
+		backBtn: new FullheightButton({
+			events: {
+				click: (e: Event): void => {
+					e.preventDefault();
+					router.go(`/${e.target.dataset.href}`);
+				},
+			},
+			attrs: {
+				href: '/chat',
+				'data-href': 'chat',
+			},
+		}),
+		displayName: userInfo.display_name || '',
+		profileImageForm,
+		profileForm: new Form(profileFormSettings),
+		profilePasswordForm: new Form(profilePasswordFormSettings),
+		logoutBtn: new Button({
+			title: 'Выйти из профиля',
+			type: 'accent',
+			events: {
+				click: (e: Event) => {
+					e.preventDefault();
+
+					AuthAPI.logOut().then(() => {
+						store.removeState();
+						router.go('/');
+					});
+				},
+			},
+		}),
+	};
+}

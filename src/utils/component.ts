@@ -42,8 +42,15 @@ abstract class Component {
 			let isComponent = value instanceof Component;
 			let isArrayOfComponents =
 				value instanceof Array && value[0] instanceof Component;
+
+			// тот случай, когда непонятно, что будет содержать массив
+			let isEmptyArray = value instanceof Array && !value.length;
+
 			if (isComponent || isArrayOfComponents) {
 				children[key] = value;
+			} else if (isEmptyArray) {
+				children[key] = value;
+				newProps[key] = value;
 			} else {
 				newProps[key] = value;
 			}
@@ -71,26 +78,36 @@ abstract class Component {
 
 	init() {
 		this._createComponent();
-
 		this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
+		this.componentDidMount();
 	}
 
 	_componentDidMount() {
-		// this.componentDidMount();
+		this.componentDidMount();
+		Object.values(this.children).forEach((child) => {
+			child.dispatchComponentDidMount();
+		});
 	}
 
-	componentDidMount(oldProps: Props): void {}
+	componentDidMount(oldProps?: Props): void {}
 
 	dispatchComponentDidMount() {
 		this.eventBus.emit(Component.EVENTS.FLOW_CDM);
+		if (Object.keys(this.children).length)
+			this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
 	}
 
 	_componentDidUpdate(oldProps: Props, newProps: Props): void {
-		const response = this.componentDidUpdate(oldProps, newProps);
+		const { props, children } = this._getPropsAndChildren(newProps);
+
+		const response = this.componentDidUpdate(oldProps, props);
+		this.children = { ...this.children, ...children };
+
 		if (!response) {
 			return;
 		}
-		this._render();
+
+		this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
 	}
 
 	componentDidUpdate(oldProps: Props, newProps: Props): boolean {
@@ -203,7 +220,6 @@ abstract class Component {
 			},
 			set(target: Props, prop: PropertyKey, value: any): boolean {
 				target[prop] = value;
-
 				eventBus.emit(Component.EVENTS.FLOW_CDU, { ...target }, target);
 				return true;
 			},

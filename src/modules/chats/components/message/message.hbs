@@ -1,7 +1,5 @@
 {{#if msg}}
-	{{#each msg}}
-		<p class='message--text {{#if ../isOwn}}message--text-light{{/if}}'>{{this}}</p>
-	{{/each}}
+	<p class='message--text {{#if isOwn}}message--text-light{{/if}}'>{{msg}}</p>
 	<span class='message--time {{#if isOwn}}message--time-light{{/if}}'>{{time}}</span>
 {{/if}}
 

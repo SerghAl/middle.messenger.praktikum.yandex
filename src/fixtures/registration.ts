@@ -11,6 +11,7 @@ import {
 } from '../utils/validation';
 import AuthAPI from '../api/auth_api';
 import { Router } from '../utils/Router';
+import { setUserInfo } from '../utils/Store/Actions';
 
 let router = new Router('.app');
 
@@ -64,13 +65,6 @@ let secondNameInput = new Input({
 			secondNameInput.checkValidation();
 		},
 	},
-});
-
-let chatNameInput = new Input({
-	type: 'text',
-	label: 'Имя в чате',
-	name: 'display_name',
-	placeholder: 'Иван',
 });
 
 let phoneInput = new Input({
@@ -134,7 +128,6 @@ let regFormSettings: Props = {
 		loginInput,
 		firstNameInput,
 		secondNameInput,
-		chatNameInput,
 		phoneInput,
 		passwordInput,
 		repeatPasswordInput,
@@ -147,10 +140,18 @@ let regFormSettings: Props = {
 			});
 
 			let formData = new FormData(<HTMLFormElement>e.target);
+			let data = Object.fromEntries(formData.entries());
 
-			AuthAPI.signUp(Object.fromEntries(formData.entries()))
+			AuthAPI.signUp(data)
 				.then(() => {
-					router.go('/chats');
+					return AuthAPI.signIn({ login: data.login, password: data.password });
+				})
+				.then(() => {
+					return AuthAPI.getUserInfo();
+				})
+				.then(({ response }: Props) => {
+					setUserInfo(JSON.parse(response));
+					router.go('/chat');
 				})
 				.catch((error) => {
 					console.log(error);

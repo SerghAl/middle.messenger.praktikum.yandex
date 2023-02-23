@@ -1,8 +1,14 @@
 import ProfileView from './profile';
 import { connect } from '../../utils/Store';
+import getProfileData from '../../fixtures/profile';
 
 export default connect(ProfileView, (state) => {
+	if (!state.userInfo) {
+		return {
+			...getProfileData({}),
+		};
+	}
 	return {
-		first_name: state.first_name,
+		...getProfileData(state.userInfo),
 	};
 });

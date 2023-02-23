@@ -6,12 +6,11 @@ export default function connect(
 	mapStateToProps: Function
 ) {
 	return class extends Component {
-		constructor(tag: string, props: Props) {
+		constructor(props: Props) {
 			const store = new Store();
-
-			super(tag, { props, ...mapStateToProps(store.getState()) });
-
+			super({ ...props, ...mapStateToProps(store.getState()) });
 			store.on(Store.EVENTS.UPDATE, () => {
+				console.log('UPDATE STORE');
 				this.setProps({ ...mapStateToProps(store.getState()) });
 			});
 		}

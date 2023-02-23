@@ -15,6 +15,7 @@ class ProfileView extends Component {
 	}
 
 	render() {
+		console.log('Page render');
 		return this.compile(tpl);
 	}
 

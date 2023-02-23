@@ -51,15 +51,12 @@ let authFormSettings: Props = {
 			let formData = new FormData(<HTMLFormElement>e.target);
 
 			AuthAPI.signIn(Object.fromEntries(formData.entries()))
-				.then((response) => {
-					console.log('THEN: ', response);
-				})
 				.then(() => {
-					AuthAPI.getUserInfo().then(({ response }: Props) => {
-						console.log('DATA', response);
-						setUserInfo(JSON.parse(response));
-						router.go('/chat');
-					});
+					return AuthAPI.getUserInfo();
+				})
+				.then(({ response }: Props) => {
+					setUserInfo(JSON.parse(response));
+					router.go('/chat');
 				})
 				.catch((error) => {
 					console.log(error);
