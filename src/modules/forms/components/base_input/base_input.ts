@@ -26,8 +26,10 @@ class BaseInput extends Component {
 				this.setProps({
 					attrs: { placeholder: isValid.error },
 				});
+				return false;
 			} else {
 				this.setProps({ value: input.value });
+				return true;
 			}
 		}
 	}

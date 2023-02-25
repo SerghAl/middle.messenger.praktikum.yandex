@@ -164,7 +164,7 @@ let messageBarSettings: Props = {
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
-			messageInput.checkValidation();
+			if (!messageInput.checkValidation()) return;
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 			let data = Object.fromEntries(formData.entries());
