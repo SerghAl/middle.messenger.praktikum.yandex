@@ -160,7 +160,10 @@ abstract class Component {
 		this._element.appendChild(component);
 		this.addAttributes();
 		this.addEvents();
+		this.afterRender();
 	}
+
+	afterRender(): void {}
 
 	abstract render(): DocumentFragment;
 

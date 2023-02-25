@@ -252,7 +252,7 @@ export default function getProfileData(userInfo: any) {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.target.dataset.href}`);
+					router.go(`/${e.currentTarget.dataset.href}`);
 				},
 			},
 			attrs: {

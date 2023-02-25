@@ -10,7 +10,6 @@ export default function connect(
 			const store = new Store();
 			super({ ...props, ...mapStateToProps(store.getState()) });
 			store.on(Store.EVENTS.UPDATE, () => {
-				console.log('UPDATE STORE');
 				this.setProps({ ...mapStateToProps(store.getState()) });
 			});
 		}

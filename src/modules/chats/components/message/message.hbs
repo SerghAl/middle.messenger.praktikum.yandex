@@ -1,11 +1,11 @@
 {{#if msg}}
 	<p class='message--text {{#if isOwn}}message--text-light{{/if}}'>{{msg}}</p>
-	<span class='message--time {{#if isOwn}}message--time-light{{/if}}'>{{time}}</span>
+	<span class='message--time {{#if isOwn}}message--time-light{{/if}}'>{{formatTime}}</span>
 {{/if}}
 
 {{#if images}}
 	{{#each images}}
 		<img src='{{img}}' alt='{{#if title}}{{title}}{{else}}{{img}}{{/if}}' class='message--img' />
 	{{/each}}
-	<span class='message--time message--time-plank'>{{time}}</span>
+	<span class='message--time message--time-plank'>{{formatTime}}</span>
 {{/if}}

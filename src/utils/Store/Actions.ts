@@ -9,8 +9,11 @@ export const setUserInfo = (data: Props) => {
 export const getUserInfo = () => {
 	let state = store.getState();
 	let userInfo = state.userInfo;
+	if (userInfo) {
+		return Object.assign({}, userInfo);
+	}
 
-	return Object.assign({}, userInfo);
+	return null;
 };
 
 export const setChats = (data: Props) => {
@@ -21,19 +24,33 @@ export const setDialogue = (data: Props) => {
 	store.set('dialogue', data);
 };
 
-export const setDialogueMessages = (data: Props) => {
-	console.log('setDialogMse');
+export const clearDialogueMessages = () => {
+	store.set('dialogueMessages', []);
+};
+
+export const getCurrentChat = () => {
+	return store.getState().dialogue?.id;
+};
+
+export const setDialogueMessages = (data: Array<unknown>) => {
 	let oldMessages = getDialogueMessages();
 
-	if (oldMessages) {
-		store.set('dialogueMessages', [...oldMessages, ...data]);
+	function reverseSort(a: { time: string }, b: { time: string }) {
+		if (new Date(a.time) < new Date(b.time)) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+	if (oldMessages.length) {
+		store.set('dialogueMessages', [...oldMessages, ...data].sort(reverseSort));
 	} else {
-		store.set('dialogueMessages', data);
+		store.set('dialogueMessages', data.sort(reverseSort));
 	}
 };
 
 export const getDialogueMessages = () => {
-	return store.getState().dialogueMessages;
+	return store.getState().dialogueMessages || [];
 };
 
 export const setChatUsers = (data: Props) => {

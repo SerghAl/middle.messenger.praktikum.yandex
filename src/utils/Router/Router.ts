@@ -1,6 +1,7 @@
 import Component from '../component';
 import { Route } from '.';
 import AuthAPI from '../../api/auth_api';
+import { getUserInfo } from '../Store/Actions';
 
 export default class Router {
 	static __instance: Router;
@@ -44,6 +45,12 @@ export default class Router {
 	}
 
 	_onRoute(pathname: string): void {
+		let user = getUserInfo();
+		if (pathname !== '/' && !user) {
+			this.go('/');
+			return;
+		}
+
 		const route = this.getRoute(pathname);
 		if (!route) {
 			return;

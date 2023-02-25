@@ -16,8 +16,11 @@ import { Router } from '../utils/Router/index';
 import UserAPI from '../api/user_api';
 import ChatAPI from '../api/chat_api';
 import {
+	clearDialogueMessages,
 	getChatId,
 	getChatTitle,
+	getCurrentChat,
+	getDialogueMessages,
 	getUserInfo,
 	setChatUsers,
 	setChats,
@@ -31,8 +34,15 @@ import { connect } from '../utils/Store';
 import debounce from '../utils/debouncer';
 import Modal from '../components/modal';
 import { formatDate } from '../utils/formatter';
+import MessageList from '../modules/chats/components/message_list';
 
 let socket = null;
+let ProfileBarConnect = connect(ProfileBar, (store) => {
+	return {
+		title: getChatTitle(),
+		img: store.dialogue?.avatar || personImg,
+	};
+});
 
 let chatListConnect = connect(ChatList, (store) => {
 	return {
@@ -44,8 +54,10 @@ let chatListConnect = connect(ChatList, (store) => {
 					},
 					img: chat.avatar,
 					chatTitle: chat.title,
-					chatMsg: chat.last_message.content,
-					chatTime: formatDate(chat.last_message.time),
+					chatMsg: chat.last_message?.content,
+					chatTime: chat.last_message
+						? formatDate(chat.last_message?.time)
+						: null,
 					chatNewMsgs: chat.unread_count,
 					delBtn: new IconButton({
 						src: trashIcon,
@@ -84,6 +96,13 @@ let chatListConnect = connect(ChatList, (store) => {
 								let chatId = e.currentTarget.dataset.id;
 								let userId = getUserInfo().id;
 								let token = null;
+								console.log(chatId, getCurrentChat());
+
+								if (Number(chatId) === Number(getCurrentChat())) {
+									return;
+								} else {
+									clearDialogueMessages();
+								}
 
 								ChatAPI.getChatUsers(chatId)
 									.then(({ response }) => {
@@ -151,6 +170,14 @@ let messageBarSettings: Props = {
 			let data = Object.fromEntries(formData.entries());
 
 			if (socket) {
+				socket.afterMessage = () => {
+					messageInput._element.value = null;
+					messageInput._element.focus();
+
+					let messages = document.querySelector('.chat_dialogue--messages');
+					messages?.scrollBy(0, messages?.scrollHeight);
+				};
+
 				socket.send(
 					JSON.stringify({
 						content: data.message,
@@ -158,6 +185,7 @@ let messageBarSettings: Props = {
 					})
 				);
 			}
+
 			console.log('Message form: ', data);
 		},
 	},
@@ -165,7 +193,7 @@ let messageBarSettings: Props = {
 
 export default {
 	messageBar: new MessageBar(messageBarSettings),
-	profileBar: new ProfileBar({ img: personImg, title: getChatTitle() }),
+	profileBar: new ProfileBarConnect({}),
 	profileBtn: new TextArrowButton({
 		title: 'Профиль',
 		attrs: {
@@ -197,7 +225,7 @@ export default {
 					})
 					.then(({ response }) => {
 						setChats(JSON.parse(response));
-						Array.from(e.target.elements).forEach((element) => {
+						Array.from(e.target?.elements).forEach((element) => {
 							if (element.type !== 'submit') {
 								element.value = '';
 							}
@@ -250,7 +278,30 @@ export default {
 		},
 	}),
 	dialogue: {},
-	dialogueMessages: [],
+	messageList: new MessageList({
+		events: {
+			scroll: (e: Event) => {
+				let scrollTop = e.target.scrollTop;
+				let dialogueMessages = getDialogueMessages();
+				let messages = document.querySelector('.chat_dialogue--messages');
+				let scrollToElementId = messages?.firstElementChild.id;
+
+				if (scrollTop === 0) {
+					socket.afterMessage = () => {
+						let scrollToElement = document.getElementById(scrollToElementId);
+						scrollToElement?.scrollIntoView();
+					};
+
+					socket.send(
+						JSON.stringify({
+							content: dialogueMessages[0].id,
+							type: 'get old',
+						})
+					);
+				}
+			},
+		},
+	}),
 	search: new Search({
 		attrs: { action: '#' },
 	}),
