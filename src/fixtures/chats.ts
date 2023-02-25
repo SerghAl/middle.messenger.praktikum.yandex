@@ -7,11 +7,127 @@ import Search from '../modules/search';
 import TextArrowButton from '../modules/chats/components/button';
 import ProfileBar from '../modules/chats/components/profile_bar';
 import MessageBar from '../modules/chats/components/message_bar';
+import AddBar from '../modules/chats/components/add_bar';
 
 import BaseInput from '../modules/forms/components/base_input';
 import IconButton from '../components/icon_button';
 import { checkMessage } from '../utils/validation';
-import { getRoute } from '../utils/router';
+import { Router } from '../utils/Router/index';
+import UserAPI from '../api/user_api';
+import ChatAPI from '../api/chat_api';
+import {
+	clearDialogueMessages,
+	getChatId,
+	getChatTitle,
+	getCurrentChat,
+	getDialogueMessages,
+	getUserInfo,
+	setChatUsers,
+	setChats,
+	setDialogue,
+} from '../utils/Store/Actions';
+
+import trashIcon from '../../static/images/trash.svg';
+import connectToChat from '../utils/services';
+import ChatList from '../modules/chats/components/chat_list/chat_list';
+import { connect } from '../utils/Store';
+import debounce from '../utils/debouncer';
+import Modal from '../components/modal';
+import { formatDate } from '../utils/formatter';
+import MessageList from '../modules/chats/components/message_list';
+
+let socket = null;
+let ProfileBarConnect = connect(ProfileBar, (store) => {
+	return {
+		title: getChatTitle(),
+		img: store.dialogue?.avatar || personImg,
+	};
+});
+
+let chatListConnect = connect(ChatList, (store) => {
+	return {
+		chats: store.chats?.map(
+			(chat) =>
+				new Chat({
+					attrs: {
+						'data-id': chat.id,
+					},
+					img: chat.avatar,
+					chatTitle: chat.title,
+					chatMsg: chat.last_message?.content,
+					chatTime: chat.last_message
+						? formatDate(chat.last_message?.time)
+						: null,
+					chatNewMsgs: chat.unread_count,
+					delBtn: new IconButton({
+						src: trashIcon,
+						attrs: { class: 'chat--btn_del', 'data-id': chat.id },
+						events: {
+							click: (e: Event) => {
+								e.preventDefault();
+								e.stopPropagation();
+								let chatId = e.currentTarget.dataset.id;
+								let data = { chatId };
+
+								ChatAPI.deleteChat(data)
+									.then(({ response }) => {
+										return ChatAPI.getChats();
+									})
+									.then(({ response }) => {
+										setChats(JSON.parse(response));
+									});
+							},
+						},
+					}),
+					events: {
+						click: (e: Event) => {
+							e.preventDefault();
+
+							if (e.currentTarget.classList.contains('chat-selected')) {
+								e.currentTarget.classList.remove('chat-selected');
+							} else {
+								let prevSelectedChat = document.querySelector('.chat-selected');
+								if (prevSelectedChat) {
+									prevSelectedChat.classList.remove('chat-selected');
+								}
+
+								e.currentTarget.classList.add('chat-selected');
+
+								let chatId = e.currentTarget.dataset.id;
+								let userId = getUserInfo().id;
+								let token = null;
+								console.log(chatId, getCurrentChat());
+
+								if (Number(chatId) === Number(getCurrentChat())) {
+									return;
+								} else {
+									clearDialogueMessages();
+								}
+
+								ChatAPI.getChatUsers(chatId)
+									.then(({ response }) => {
+										setChatUsers(JSON.parse(response));
+
+										return ChatAPI.requestToken(chatId).then(({ response }) => {
+											token = JSON.parse(response).token;
+											setDialogue({ title: chat.title, id: chat.id });
+											socket = connectToChat(userId, chatId, token);
+										});
+									})
+									.catch((error) => {
+										console.log(error);
+									});
+							}
+						},
+					},
+				})
+		),
+	};
+});
+
+let chatList = new chatListConnect({ chats: [] });
+
+const router = new Router('.app');
 
 let messageInput = new BaseInput({
 	events: {
@@ -48,17 +164,36 @@ let messageBarSettings: Props = {
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
-			messageInput.checkValidation();
+			if (!messageInput.checkValidation()) return;
 
 			let formData = new FormData(<HTMLFormElement>e.target);
-			console.log('Message form: ', Object.fromEntries(formData.entries()));
+			let data = Object.fromEntries(formData.entries());
+
+			if (socket) {
+				socket.afterMessage = () => {
+					messageInput._element.value = null;
+					messageInput._element.focus();
+
+					let messages = document.querySelector('.chat_dialogue--messages');
+					messages?.scrollBy(0, messages?.scrollHeight);
+				};
+
+				socket.send(
+					JSON.stringify({
+						content: data.message,
+						type: 'message',
+					})
+				);
+			}
+
+			console.log('Message form: ', data);
 		},
 	},
 };
 
 export default {
 	messageBar: new MessageBar(messageBarSettings),
-	profileBar: new ProfileBar({ img: personImg, title: 'Андрей' }),
+	profileBar: new ProfileBarConnect({}),
 	profileBtn: new TextArrowButton({
 		title: 'Профиль',
 		attrs: {
@@ -68,61 +203,107 @@ export default {
 		},
 		events: {
 			click: (e: Event): void => {
-				getRoute(e);
+				e.preventDefault();
+				router.go(`/${e.target.dataset.href}`);
 			},
 		},
 	}),
-	search: new Search({ attrs: { action: '#' } }),
-	chatList: [
-		new Chat({
-			img: personImg,
-			chatTitle: 'Андрей',
-			chatMsg: 'Изображение',
-			chatTime: '10:49',
-			chatNewMsgs: 2,
-		}),
-		new Chat({
-			chatTitle: 'Киноклуб',
-			ownMsg: true,
-			chatMsg: 'стикер',
-			chatTime: '12:00',
-		}),
-		new Chat({
-			chatTitle: 'Илья',
-			chatMsg: 'Друзья, у меня для вас особенный выпуск новостей!...',
-			chatTime: '15:12',
-			chatNewMsgs: 2,
-		}),
-		new Chat({
-			chatTitle: 'Вадим',
-			chatMsg: 'Круто!',
-			chatTime: 'Пт',
-			ownMsg: true,
-		}),
-		new Chat({
-			chatTitle: 'тет-а-теты',
-			chatMsg: 'И Human Interface Guidelines и Material Design рекомендуют...',
-			chatTime: 'Ср',
-		}),
-		new Chat({
-			chatTitle: '1, 2, 3',
-			chatMsg: 'Миллионы россиян ежедневно проводят десятки часов свое...',
-			chatTime: 'Пн',
-		}),
-		new Chat({
-			chatTitle: 'Design Destroyer',
-			chatMsg: 'В 2008 году художник Jon Rafman  начал собирать...',
-			chatTime: 'Пн',
-		}),
-		new Chat({
-			chatTitle: 'Day.',
-			chatMsg: 'Так увлёкся работой по курсу, что совсем забыл его анонсир...',
-			chatTime: '1 Мая 2020',
-		}),
-		new Chat({
-			chatTitle: 'Стас Рогозин',
-			chatMsg: 'Можно или сегодня или завтра вечером.',
-			chatTime: '12 Апр 2020',
-		}),
-	],
+	createChatBar: new AddBar({
+		placeholder: 'Введите название нового чата',
+		name: 'title',
+		events: {
+			submit: (e: Event) => {
+				e.preventDefault();
+
+				let formData = new FormData(e.target);
+
+				let data = Object.fromEntries(formData.entries());
+
+				ChatAPI.createChat(data)
+					.then(({ response }) => {
+						return ChatAPI.getChats();
+					})
+					.then(({ response }) => {
+						setChats(JSON.parse(response));
+						Array.from(e.target?.elements).forEach((element) => {
+							if (element.type !== 'submit') {
+								element.value = '';
+							}
+						});
+					});
+			},
+		},
+	}),
+	addUserBar: new AddBar({
+		placeholder: 'Введите имя пользователя, которого хотите добавить к чату',
+		name: 'title',
+		dropdown: true,
+		events: {
+			input: debounce((e: Event) => {
+				e.preventDefault();
+				let input = e.target;
+				let form = input.parentNode;
+				let prevModal = form.querySelector('.modal');
+				let data = { login: input?.value };
+				let chatId = getChatId();
+
+				if (!data.login && prevModal) {
+					form.removeChild(prevModal);
+				} else {
+					UserAPI.getUserByLogin(data).then(({ response }) => {
+						let dataset = JSON.parse(response);
+
+						let modal = new Modal({
+							dataset,
+							events: {
+								click: (e: Event) => {
+									e.preventDefault();
+									let userId = e.currentTarget.dataset.id;
+									let users = [userId];
+
+									ChatAPI.addUsersToChat(chatId, users).then(({ response }) => {
+										console.log(response);
+									});
+								},
+							},
+						});
+
+						if (prevModal) {
+							form.removeChild(prevModal);
+						}
+						form.appendChild(modal.getContent());
+					});
+				}
+			}, 700),
+		},
+	}),
+	dialogue: {},
+	messageList: new MessageList({
+		events: {
+			scroll: (e: Event) => {
+				let scrollTop = e.target.scrollTop;
+				let dialogueMessages = getDialogueMessages();
+				let messages = document.querySelector('.chat_dialogue--messages');
+				let scrollToElementId = messages?.firstElementChild.id;
+
+				if (scrollTop === 0) {
+					socket.afterMessage = () => {
+						let scrollToElement = document.getElementById(scrollToElementId);
+						scrollToElement?.scrollIntoView();
+					};
+
+					socket.send(
+						JSON.stringify({
+							content: dialogueMessages[0].id,
+							type: 'get old',
+						})
+					);
+				}
+			},
+		},
+	}),
+	search: new Search({
+		attrs: { action: '#' },
+	}),
+	chatList,
 };

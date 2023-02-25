@@ -10,10 +10,22 @@
 
 .message_bar--attach_btn {
 	margin-right: 10px;
+
+	border: none;
+
+	background: none;
+
+	cursor: pointer;
 }
 
 .message_bar--submit {
 	margin-left: 10px;
+
+	border: none;
+
+	background: none;
+
+	cursor: pointer;
 }
 
 .message_bar--form {

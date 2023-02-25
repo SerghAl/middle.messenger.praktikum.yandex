@@ -9,12 +9,17 @@ import {
 	checkPassword,
 	checkPhone,
 } from '../utils/validation';
+import AuthAPI from '../api/auth_api';
+import { Router } from '../utils/Router';
+import { setUserInfo } from '../utils/Store/Actions';
+
+let router = new Router('.app');
 
 let emailInput = new Input({
 	type: 'email',
 	label: 'Почта',
 	name: 'email',
-	value: 'pochta@yandex.ru',
+	placeholder: 'pochta@yandex.ru',
 	validator: checkMail,
 	events: {
 		blur: (): void => {
@@ -27,7 +32,7 @@ let loginInput = new Input({
 	type: 'text',
 	label: 'Логин',
 	name: 'login',
-	value: 'ivanivanov',
+	placeholder: 'ivanivanov',
 	validator: checkLogin,
 	events: {
 		blur: (): void => {
@@ -40,7 +45,7 @@ let firstNameInput = new Input({
 	type: 'text',
 	label: 'Имя',
 	name: 'first_name',
-	value: 'Иван',
+	placeholder: 'Иван',
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -53,7 +58,7 @@ let secondNameInput = new Input({
 	type: 'text',
 	label: 'Фамилия',
 	name: 'second_name',
-	value: 'Иванов',
+	placeholder: 'Иванов',
 	validator: checkName,
 	events: {
 		blur: (): void => {
@@ -62,18 +67,11 @@ let secondNameInput = new Input({
 	},
 });
 
-let chatNameInput = new Input({
-	type: 'text',
-	label: 'Имя в чате',
-	name: 'display_name',
-	value: 'Иван',
-});
-
 let phoneInput = new Input({
 	type: 'tel',
 	label: 'Телефон',
 	name: 'phone',
-	value: '+7 (909) 967 30 30',
+	placeholder: '89099673030',
 	validator: checkPhone,
 	events: {
 		blur: (): void => {
@@ -86,7 +84,6 @@ let passwordInput = new Input({
 	type: 'password',
 	label: 'Пароль',
 	name: 'password',
-	value: '••••••••••••',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -99,7 +96,6 @@ let repeatPasswordInput = new Input({
 	type: 'password',
 	label: 'Пароль (ещё раз)',
 	name: 'password',
-	value: '••••••••••••',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -124,7 +120,13 @@ let regFormSettings: Props = {
 			title: 'Войти',
 			type: 'primary',
 			size: 'full',
-			data: { key: 'href', value: 'authorization' },
+			data: { key: 'href', value: '' },
+			events: {
+				click: (e: Event): void => {
+					e.preventDefault();
+					router.go(`/${e.currentTarget.dataset.href}`);
+				},
+			},
 		}),
 	],
 	inputs: [
@@ -132,7 +134,6 @@ let regFormSettings: Props = {
 		loginInput,
 		firstNameInput,
 		secondNameInput,
-		chatNameInput,
 		phoneInput,
 		passwordInput,
 		repeatPasswordInput,
@@ -140,16 +141,32 @@ let regFormSettings: Props = {
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
+
+			let isValid = true;
+
 			regFormSettings.inputs.forEach((input: Input) => {
-				input.checkValidation();
+				if (!input.checkValidation()) isValid = false;
 			});
 
-			let formData = new FormData(<HTMLFormElement>e.target);
+			if (!isValid) return;
 
-			console.log(
-				'Registration form: ',
-				Object.fromEntries(formData.entries())
-			);
+			let formData = new FormData(<HTMLFormElement>e.target);
+			let data = Object.fromEntries(formData.entries());
+
+			AuthAPI.signUp(data)
+				.then(() => {
+					return AuthAPI.signIn({ login: data.login, password: data.password });
+				})
+				.then(() => {
+					return AuthAPI.getUserInfo();
+				})
+				.then(({ response }: Props) => {
+					setUserInfo(JSON.parse(response));
+					router.go('/chat');
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		},
 	},
 };

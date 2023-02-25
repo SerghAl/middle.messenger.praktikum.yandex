@@ -1,0 +1,30 @@
+{{#if dataset}}
+
+	{{#each dataset}}
+		<div class='modal--item' data-id='{{this.id}}'>
+			{{#if this.avatar}}
+				<img
+					class='modal--img'
+					src='https://ya-praktikum.tech/api/v2/resources/{{this.avatar}}'
+					alt=''
+					width='40px'
+					height='40px'
+				/>
+			{{else}}
+				<div class='modal--img'></div>
+			{{/if}}
+
+			<div class='modal--info'>
+				<h2 class='modal--login'>{{this.login}}</h2>
+				<p class='modal--name'>{{this.display_name}}</p>
+			</div>
+			<div class='modal--action'>
+				{{actionBtn}}
+			</div>
+		</div>
+
+	{{/each}}
+{{else}}
+	<p class='modal--msg'>К сожалению, не удалось найти пользователей с таким
+		логином</p>
+{{/if}}

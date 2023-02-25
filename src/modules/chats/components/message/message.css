@@ -78,9 +78,5 @@
 }
 
 .message--text-light {
-	color: black;
-}
-
-.message--text:last-of-type {
-	margin-bottom: 0;
+	color: var(--color-primary);
 }
