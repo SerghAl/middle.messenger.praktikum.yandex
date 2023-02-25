@@ -44,9 +44,13 @@ let authFormSettings: Props = {
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
+			let isValid = true;
+
 			authFormSettings.inputs.forEach((input: Input) => {
-				input.checkValidation();
+				if (!input.checkValidation()) isValid = false;
 			});
+
+			if (!isValid) return;
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 
@@ -77,7 +81,15 @@ let authFormSettings: Props = {
 			title: 'Нет аккаунта?',
 			type: 'primary',
 			size: 'full',
-			data: { key: 'href', value: 'registration' },
+			attrs: {
+				'data-href': 'registration',
+			},
+			events: {
+				click: (e: Event): void => {
+					e.preventDefault();
+					router.go(`/${e.currentTarget.dataset.href}`);
+				},
+			},
 		}),
 	],
 	inputs: [loginInput, passwordInput],

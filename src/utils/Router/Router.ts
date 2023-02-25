@@ -46,7 +46,7 @@ export default class Router {
 
 	_onRoute(pathname: string): void {
 		let user = getUserInfo();
-		if (pathname !== '/' && !user) {
+		if (pathname !== '/' && pathname !== '/registration' && !user) {
 			this.go('/');
 			return;
 		}

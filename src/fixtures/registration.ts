@@ -120,7 +120,13 @@ let regFormSettings: Props = {
 			title: 'Войти',
 			type: 'primary',
 			size: 'full',
-			data: { key: 'href', value: 'authorization' },
+			data: { key: 'href', value: '' },
+			events: {
+				click: (e: Event): void => {
+					e.preventDefault();
+					router.go(`/${e.currentTarget.dataset.href}`);
+				},
+			},
 		}),
 	],
 	inputs: [
@@ -135,9 +141,14 @@ let regFormSettings: Props = {
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
+
+			let isValid = true;
+
 			regFormSettings.inputs.forEach((input: Input) => {
-				input.checkValidation();
+				if (!input.checkValidation()) isValid = false;
 			});
+
+			if (!isValid) return;
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 			let data = Object.fromEntries(formData.entries());

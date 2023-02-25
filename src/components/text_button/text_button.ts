@@ -18,7 +18,7 @@ class TextButton extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('button', { ...props, attrs: { class: styles } });
+		super('button', { ...props, attrs: { ...props.attrs, class: styles } });
 	}
 
 	render() {
