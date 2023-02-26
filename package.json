@@ -2,7 +2,7 @@
 	"name": "snowball_messenger",
 	"version": "1.0.0",
 	"description": "My own messenger",
-	"source": "src/index.html",
+	"source": "./src/index.html",
 	"browserslist": "last 2 versions",
 	"engines": {
 		"node": ">=18.12.1",

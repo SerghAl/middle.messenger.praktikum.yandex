@@ -1,9 +1,7 @@
 import HTTPTransport from '../utils/request';
 import { BaseAPI } from './base_api';
 
-const userAPIInstance = new HTTPTransport(
-	'https://ya-praktikum.tech/api/v2/user'
-);
+const userAPIInstance = new HTTPTransport('/user');
 
 export default class UserAPI extends BaseAPI {
 	static changeProfile(data: Props) {

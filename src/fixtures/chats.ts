@@ -25,6 +25,7 @@ import {
 	setChatUsers,
 	setChats,
 	setDialogue,
+	updateChat,
 } from '../utils/Store/Actions';
 
 import trashIcon from '../../static/images/trash.svg';
@@ -35,24 +36,64 @@ import debounce from '../utils/debouncer';
 import Modal from '../components/modal';
 import { formatDate } from '../utils/formatter';
 import MessageList from '../modules/chats/components/message_list';
+import ImageForm from '../modules/forms/components/image_form';
+import { BASE_URL } from '../settings/constants';
 
-let socket = null;
-let ProfileBarConnect = connect(ProfileBar, (store) => {
+let socket: WebSocket | null = null;
+let ProfileBarConnect = connect(ProfileBar, (store: TStore) => {
 	return {
 		title: getChatTitle(),
 		img: store.dialogue?.avatar || personImg,
 	};
 });
 
-let chatListConnect = connect(ChatList, (store) => {
+let ChatImageFormClass = connect(ImageForm, (store: TStore) => {});
+
+let chatListConnect = connect(ChatList, (store: TStore) => {
 	return {
 		chats: store.chats?.map(
-			(chat) =>
+			(chat: Props) =>
 				new Chat({
 					attrs: {
 						'data-id': chat.id,
 					},
-					img: chat.avatar,
+					chatImg: new ChatImageFormClass({
+						method: 'POST',
+						type: 'file',
+						label: 'Аватар',
+						name: 'avatar',
+						baseClass: 'chat',
+						attrs: { class: 'chat--avatar' },
+						value:
+							chat && chat.avatar
+								? `${BASE_URL}/resources${chat.avatar}`
+								: personImg,
+						events: {
+							change: (e: Event) => {
+								e.preventDefault();
+								e.stopPropagation();
+								let formData = new FormData(
+									<HTMLFormElement>e.currentTarget?.parentNode.parentNode
+								);
+
+								formData.append('chatId', chat.id);
+
+								ChatAPI.putChatsAvatar(formData)
+									.then(({ response }) => {
+										let data = JSON.parse(response);
+										updateChat(chat.id, { avatar: data.avatar });
+										setDialogue({
+											title: chat.title,
+											id: chat.id,
+											avatar: `${BASE_URL}/resources${data.avatar}`,
+										});
+									})
+									.catch((error) => {
+										console.log(error);
+									});
+							},
+						},
+					}),
 					chatTitle: chat.title,
 					chatMsg: chat.last_message?.content,
 					chatTime: chat.last_message
@@ -66,37 +107,39 @@ let chatListConnect = connect(ChatList, (store) => {
 							click: (e: Event) => {
 								e.preventDefault();
 								e.stopPropagation();
-								let chatId = e.currentTarget.dataset.id;
+								let chatId = e.currentTarget?.dataset.id;
 								let data = { chatId };
 
-								ChatAPI.deleteChat(data)
-									.then(({ response }) => {
-										return ChatAPI.getChats();
-									})
-									.then(({ response }) => {
-										setChats(JSON.parse(response));
-									});
+								let agreement = confirm('Вы уверены, что хотите удалить чат?');
+
+								if (agreement) {
+									ChatAPI.deleteChat(data)
+										.then(() => {
+											return ChatAPI.getChats();
+										})
+										.then(({ response }) => {
+											setChats(JSON.parse(response));
+										});
+								}
 							},
 						},
 					}),
 					events: {
 						click: (e: Event) => {
-							e.preventDefault();
-
-							if (e.currentTarget.classList.contains('chat-selected')) {
-								e.currentTarget.classList.remove('chat-selected');
+							let target = <HTMLElement>e.currentTarget;
+							if (target?.classList.contains('chat-selected')) {
+								target.classList.remove('chat-selected');
 							} else {
 								let prevSelectedChat = document.querySelector('.chat-selected');
 								if (prevSelectedChat) {
 									prevSelectedChat.classList.remove('chat-selected');
 								}
 
-								e.currentTarget.classList.add('chat-selected');
+								target.classList.add('chat-selected');
 
-								let chatId = e.currentTarget.dataset.id;
+								let chatId = target.dataset.id;
 								let userId = getUserInfo().id;
 								let token = null;
-								console.log(chatId, getCurrentChat());
 
 								if (Number(chatId) === Number(getCurrentChat())) {
 									return;
@@ -104,15 +147,21 @@ let chatListConnect = connect(ChatList, (store) => {
 									clearDialogueMessages();
 								}
 
-								ChatAPI.getChatUsers(chatId)
+								ChatAPI.getChatUsers(Number(chatId))
 									.then(({ response }) => {
 										setChatUsers(JSON.parse(response));
 
-										return ChatAPI.requestToken(chatId).then(({ response }) => {
-											token = JSON.parse(response).token;
-											setDialogue({ title: chat.title, id: chat.id });
-											socket = connectToChat(userId, chatId, token);
-										});
+										return ChatAPI.requestToken(Number(chatId)).then(
+											({ response }) => {
+												token = JSON.parse(response).token;
+												setDialogue({
+													title: chat.title,
+													id: chat.id,
+													avatar: `${BASE_URL}/resources${chat.avatar}`,
+												});
+												socket = connectToChat(userId, chatId, token);
+											}
+										);
 									})
 									.catch((error) => {
 										console.log(error);
@@ -197,8 +246,8 @@ export default {
 	profileBtn: new TextArrowButton({
 		title: 'Профиль',
 		attrs: {
-			href: '/profile',
-			'data-href': 'profile',
+			href: '/settings',
+			'data-href': 'settings',
 			class: 'btn_textarrow',
 		},
 		events: {
@@ -211,6 +260,7 @@ export default {
 	createChatBar: new AddBar({
 		placeholder: 'Введите название нового чата',
 		name: 'title',
+		addBtn: true,
 		events: {
 			submit: (e: Event) => {
 				e.preventDefault();
@@ -281,7 +331,7 @@ export default {
 	messageList: new MessageList({
 		events: {
 			scroll: (e: Event) => {
-				let scrollTop = e.target.scrollTop;
+				let scrollTop = e.target?.scrollTop;
 				let dialogueMessages = getDialogueMessages();
 				let messages = document.querySelector('.chat_dialogue--messages');
 				let scrollToElementId = messages?.firstElementChild.id;
@@ -292,7 +342,7 @@ export default {
 						scrollToElement?.scrollIntoView();
 					};
 
-					socket.send(
+					socket?.send(
 						JSON.stringify({
 							content: dialogueMessages[0].id,
 							type: 'get old',

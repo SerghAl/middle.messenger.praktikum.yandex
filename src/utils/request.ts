@@ -1,5 +1,6 @@
 type RequestOptions = { [key: string]: any };
 type HTTPMethod = (url: string, options?: RequestOptions) => Promise<unknown>;
+import { BASE_URL } from '../settings/constants';
 
 const METHODS = {
 	GET: 'GET',
@@ -16,13 +17,15 @@ function queryStringify(data: { [key: PropertyKey]: string | number }) {
 export default class HTTPTransport {
 	BASE_URL: string;
 
-	constructor(baseUrl: string) {
-		this.BASE_URL = baseUrl;
+	constructor(endpoint: string) {
+		this.BASE_URL = `${BASE_URL}${endpoint}`;
 	}
 
 	get: HTTPMethod = (url, options = {}) => {
+		let queryUrl = options.data ? `${url}${queryStringify(options.data)}` : url;
+
 		return this.request(
-			`${this.BASE_URL}${url}`,
+			`${this.BASE_URL}${queryUrl}`,
 			{ ...options, method: METHODS.GET },
 			options.timeout
 		);
@@ -53,7 +56,7 @@ export default class HTTPTransport {
 	};
 
 	request = (url: string, options: RequestOptions = {}, timeout = 5000) => {
-		const { headers = {}, method, data } = options;
+		const { headers = {}, method, data = {} } = options;
 		return new Promise(function (resolve, reject): void {
 			if (!method) {
 				reject('No method');
@@ -61,9 +64,8 @@ export default class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
-			const isGet = method === METHODS.GET;
 
-			xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+			xhr.open(method, url);
 
 			xhr.withCredentials = true;
 
@@ -81,11 +83,7 @@ export default class HTTPTransport {
 			xhr.timeout = timeout;
 			xhr.ontimeout = reject;
 
-			if (isGet || !data) {
-				xhr.send();
-			} else {
-				xhr.send(data);
-			}
+			xhr.send(data);
 		});
 	};
 }

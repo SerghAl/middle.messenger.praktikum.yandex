@@ -20,6 +20,19 @@ export const setChats = (data: Props) => {
 	store.set('chats', data);
 };
 
+export const updateChat = (chatId: number, data: Props) => {
+	store.set(
+		'chats',
+		store.getState().chats.map((chat) => {
+			if (chat.id === chatId) {
+				return { ...chat, ...data };
+			} else {
+				return chat;
+			}
+		})
+	);
+};
+
 export const setDialogue = (data: Props) => {
 	store.set('dialogue', data);
 };

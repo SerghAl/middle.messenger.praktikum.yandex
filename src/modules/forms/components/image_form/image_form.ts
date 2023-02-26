@@ -7,7 +7,10 @@ class ImageForm extends Component {
 		super('form', {
 			...props,
 			attrs: {
-				class: 'image_form',
+				...props.attrs,
+				class: props.attrs?.class
+					? `image_form ${props.attrs.class}`
+					: 'image_form',
 			},
 		});
 	}

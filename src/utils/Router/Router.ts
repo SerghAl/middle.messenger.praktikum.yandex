@@ -1,5 +1,5 @@
 import Component from '../component';
-import { Route } from '.';
+import { ROUTES, Route } from '.';
 import AuthAPI from '../../api/auth_api';
 import { getUserInfo } from '../Store/Actions';
 
@@ -46,8 +46,18 @@ export default class Router {
 
 	_onRoute(pathname: string): void {
 		let user = getUserInfo();
-		if (pathname !== '/' && pathname !== '/registration' && !user) {
+		if (pathname !== '/' && pathname !== '/sign-up' && !user) {
 			this.go('/');
+			return;
+		}
+
+		if (pathname === '/' && user) {
+			this.go('/messenger');
+			return;
+		}
+
+		if (pathname === '/sign-up' && user) {
+			this.go('/messenger');
 			return;
 		}
 
@@ -78,6 +88,12 @@ export default class Router {
 	}
 
 	getRoute(pathname: string): Route | undefined {
-		return this.routes.find((route) => route.match(pathname));
+		let foundedRoute = this.routes.find((route) => route.match(pathname));
+
+		if (foundedRoute) {
+			return foundedRoute;
+		} else {
+			return this.routes.find((route) => route.match('/404'));
+		}
 	}
 }

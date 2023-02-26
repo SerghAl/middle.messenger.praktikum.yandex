@@ -1,12 +1,8 @@
-{{#if img}}
-	<img
-		src='{{img}}'
-		alt='Изображение профиля {{chatTitle}}'
-		class='chat--icon'
-	/>
-{{else}}
-	<div class='chat--icon'></div>
-{{/if}}
+<div class='chat--icon'>
+	{{#if chatImg}}
+		{{{chatImg}}}
+	{{/if}}
+</div>
 <div class='chat--msg_info'>
 	<h3 class='chat--title'>{{chatTitle}}</h3>
 	<p class='chat--msg'>

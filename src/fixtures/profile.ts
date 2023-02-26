@@ -18,6 +18,7 @@ import UserAPI from '../api/user_api';
 import Store from '../utils/Store/Store';
 import { setUserInfo } from '../utils/Store/Actions';
 import { connect } from '../utils/Store';
+import { BASE_URL } from '../settings/constants';
 
 export default function getProfileData(userInfo: any) {
 	let store = new Store();
@@ -75,7 +76,7 @@ export default function getProfileData(userInfo: any) {
 		},
 	});
 
-	let EditInputClass = connect(EditInput, (store) => {
+	let EditInputClass = connect(EditInput, (store: TStore) => {
 		return {
 			value: store.userInfo?.display_name,
 		};
@@ -137,7 +138,7 @@ export default function getProfileData(userInfo: any) {
 
 				let formIsValid = true;
 
-				profileFormSettings.inputs.forEach((input) => {
+				profileFormSettings.inputs.forEach((input: EditInput) => {
 					formIsValid = input.checkValidation();
 				});
 
@@ -160,7 +161,6 @@ export default function getProfileData(userInfo: any) {
 			new Button({
 				title: 'Сохранить',
 				type: 'primary',
-				data: { key: 'href', value: 'error' },
 			}),
 		],
 		inputs: [oldPasswordInput, newPasswordInput],
@@ -174,7 +174,6 @@ export default function getProfileData(userInfo: any) {
 			new Button({
 				title: 'Сохранить',
 				type: 'primary',
-				data: { key: 'href', value: 'unfound' },
 			}),
 		],
 		events: {
@@ -183,7 +182,7 @@ export default function getProfileData(userInfo: any) {
 
 				let formIsValid = true;
 
-				profileFormSettings.inputs.forEach((input) => {
+				profileFormSettings.inputs.forEach((input: EditInput) => {
 					formIsValid = input.checkValidation();
 				});
 
@@ -214,9 +213,9 @@ export default function getProfileData(userInfo: any) {
 		],
 	};
 
-	let profileImageFormClass = connect(ImageForm, (store) => {
+	let profileImageFormClass = connect(ImageForm, (store: TStore) => {
 		return {
-			value: `https://ya-praktikum.tech/api/v2/resources/${store.userInfo?.avatar}`,
+			value: `${BASE_URL}/resources${store.userInfo?.avatar}`,
 		};
 	});
 	let profileImageForm = new profileImageFormClass({
@@ -227,13 +226,13 @@ export default function getProfileData(userInfo: any) {
 		name: 'avatar',
 		value:
 			userInfo && userInfo.avatar
-				? `https://ya-praktikum.tech/api/v2/resources/${userInfo.avatar}`
+				? `${BASE_URL}/resources${userInfo.avatar}`
 				: profileImage,
 		events: {
 			change: (e: Event) => {
 				e.preventDefault();
 				let formData = new FormData(
-					<HTMLFormElement>e.target.parentNode.parentNode
+					<HTMLFormElement>e.currentTarget?.parentNode.parentNode
 				);
 
 				UserAPI.changeAvatar(formData)
@@ -252,12 +251,12 @@ export default function getProfileData(userInfo: any) {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget.dataset.href}`);
+					router.go(`/${e.currentTarget?.dataset.href}`);
 				},
 			},
 			attrs: {
-				href: '/chat',
-				'data-href': 'chat',
+				href: '/messenger',
+				'data-href': 'messenger',
 			},
 		}),
 		displayName: userInfo.display_name || '',
