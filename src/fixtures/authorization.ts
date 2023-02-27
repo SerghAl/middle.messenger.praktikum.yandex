@@ -59,7 +59,14 @@ let authFormSettings: Props = {
 					return AuthAPI.getUserInfo();
 				})
 				.then(({ response }: Props) => {
-					setUserInfo(JSON.parse(response));
+					let data = JSON.parse(response);
+					console.log(data);
+					if (data.reason) {
+						alert('Неправильный логин или пароль');
+						throw new Error('Неправильный логин или пароль');
+					}
+
+					setUserInfo(data);
 					router.go('/messenger');
 				})
 				.catch((error) => {

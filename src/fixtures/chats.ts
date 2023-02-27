@@ -38,6 +38,7 @@ import { formatDate } from '../utils/formatter';
 import MessageList from '../modules/chats/components/message_list';
 import ImageForm from '../modules/forms/components/image_form';
 import { BASE_URL } from '../settings/constants';
+import ChatUsersList from '../modules/chats/components/chat_users_list';
 
 let socket: WebSocket | null = null;
 let ProfileBarConnect = connect(ProfileBar, (store: TStore) => {
@@ -157,7 +158,9 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 												setDialogue({
 													title: chat.title,
 													id: chat.id,
-													avatar: `${BASE_URL}/resources${chat.avatar}`,
+													avatar: chat.avatar
+														? `${BASE_URL}/resources${chat.avatar}`
+														: personImg,
 												});
 												socket = connectToChat(userId, chatId, token);
 											}
@@ -242,7 +245,7 @@ let messageBarSettings: Props = {
 
 export default {
 	messageBar: new MessageBar(messageBarSettings),
-	profileBar: new ProfileBarConnect({}),
+	profileBar: new ProfileBarConnect({ chatUsersList: new ChatUsersList({}) }),
 	profileBtn: new TextArrowButton({
 		title: 'Профиль',
 		attrs: {
@@ -302,7 +305,6 @@ export default {
 				} else {
 					UserAPI.getUserByLogin(data).then(({ response }) => {
 						let dataset = JSON.parse(response);
-
 						let modal = new Modal({
 							dataset,
 							events: {
@@ -311,9 +313,13 @@ export default {
 									let userId = e.currentTarget.dataset.id;
 									let users = [userId];
 
-									ChatAPI.addUsersToChat(chatId, users).then(({ response }) => {
-										console.log(response);
-									});
+									ChatAPI.addUsersToChat(chatId, users)
+										.then(({ response }) => {
+											return ChatAPI.getChatUsers(chatId);
+										})
+										.then(({ response }) => {
+											setChatUsers(JSON.parse(response));
+										});
 								},
 							},
 						});

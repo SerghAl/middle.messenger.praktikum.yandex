@@ -70,8 +70,21 @@ export const setChatUsers = (data: Props) => {
 	store.set('chatUsers', data);
 };
 
+export const deleteChatUser = (id: number | string) => {
+	let newUsers = store
+		.getState()
+		.chatUsers.filter((user: { id: number }) => user.id !== id);
+	store.set('chatUsers', newUsers);
+};
+
+export const getAllChatUsers = () => {
+	return store.getState().chatUsers;
+};
+
 export const getChatUsers = (id: number | string) => {
-	return store.getState().chatUsers.find((user) => user.id === Number(id));
+	return store
+		.getState()
+		.chatUsers.find((user: { id: number }) => user.id === Number(id));
 };
 
 export const isUserMessage = (id: number | string) => {
