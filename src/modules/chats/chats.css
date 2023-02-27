@@ -28,6 +28,11 @@
 	background: var(--color-secondary);
 }
 
+.image_form--label.chat--label {
+	width: 47px;
+	height: 47px;
+}
+
 .chat--msg_info {
 	flex-grow: 2;
 }

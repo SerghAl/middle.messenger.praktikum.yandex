@@ -114,7 +114,7 @@ let regFormSettings: Props = {
 			title: 'Зарегистрироваться',
 			type: 'primary',
 			size: 'full',
-			data: { key: 'href', value: 'chat' },
+			data: { key: 'href', value: 'messenger' },
 		}),
 		new TextButton({
 			title: 'Войти',
@@ -162,7 +162,7 @@ let regFormSettings: Props = {
 				})
 				.then(({ response }: Props) => {
 					setUserInfo(JSON.parse(response));
-					router.go('/chat');
+					router.go('/messenger');
 				})
 				.catch((error) => {
 					console.log(error);

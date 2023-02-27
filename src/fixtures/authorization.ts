@@ -60,7 +60,7 @@ let authFormSettings: Props = {
 				})
 				.then(({ response }: Props) => {
 					setUserInfo(JSON.parse(response));
-					router.go('/chat');
+					router.go('/messenger');
 				})
 				.catch((error) => {
 					console.log(error);
@@ -70,7 +70,7 @@ let authFormSettings: Props = {
 	controls: [
 		new Button({
 			attrs: {
-				'data-href': 'chat',
+				'data-href': 'messenger',
 				class: 'btn',
 			},
 			type: 'primary',
@@ -82,12 +82,12 @@ let authFormSettings: Props = {
 			type: 'primary',
 			size: 'full',
 			attrs: {
-				'data-href': 'registration',
+				'data-href': 'sign-up',
 			},
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget.dataset.href}`);
+					router.go(`/${e.currentTarget?.dataset.href}`);
 				},
 			},
 		}),

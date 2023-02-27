@@ -1,5 +1,9 @@
-<label class='image_form--label' htmlFor='id-{{name}}'>
-	<img class='image_form--img' src='{{value}}' alt='Фото профиля' />
+<label class='image_form--label {{baseClass}}--label' htmlFor='id-{{name}}'>
+	<img
+		class='image_form--img {{baseClass}}--img'
+		src='{{value}}'
+		alt='Фото профиля'
+	/>
 	<input
 		class='hidden'
 		type='{{type}}'

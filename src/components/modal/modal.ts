@@ -12,7 +12,7 @@ class Modal extends Component {
 	addEvents(): void {
 		let inputs = Array.from(this._element.querySelectorAll('.modal--item'));
 		if (inputs) {
-			inputs.forEach((input) => super.addEvents(input));
+			inputs.forEach((input: HTMLElement) => super.addEvents(input));
 		}
 	}
 
