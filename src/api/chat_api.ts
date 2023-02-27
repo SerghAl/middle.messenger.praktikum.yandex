@@ -87,11 +87,14 @@ export default class ChatAPI extends BaseAPI {
 	}
 
 	static deleteUsersFromChat(chatId: number, users: Array<number>) {
-		return chatAPIInstance.put('/users', {
-			data: {
+		return chatAPIInstance.delete('/users', {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: JSON.stringify({
 				users,
 				chatId,
-			},
+			}),
 		});
 	}
 
