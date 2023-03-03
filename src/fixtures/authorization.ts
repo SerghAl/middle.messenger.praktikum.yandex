@@ -3,12 +3,17 @@ import Input from '../modules/forms/components/input';
 import Button from '../components/button';
 import TextButton from '../components/text_button';
 import { checkLogin, checkPassword } from '../utils/validation';
+import AuthAPI from '../api/auth_api';
+import { setUserInfo } from '../utils/Store/Actions';
+import { Router } from '../utils/Router';
+
+let router = new Router('.app');
 
 let loginInput = new Input({
 	type: 'text',
 	label: 'Логин',
 	name: 'login',
-	value: 'ivanivanov',
+	value: '',
 	validator: checkLogin,
 	events: {
 		blur: (): void => {
@@ -21,7 +26,7 @@ let passwordInput = new Input({
 	type: 'password',
 	label: 'Пароль',
 	name: 'password',
-	value: '••••••••••••',
+	value: '',
 	validator: checkPassword,
 	events: {
 		blur: (): void => {
@@ -35,23 +40,44 @@ let authFormSettings: Props = {
 	height: 'm',
 	innerTitle: 'Вход',
 	method: 'POST',
-	action: '/fakeapi/v1/profile',
+	action: '/',
 	events: {
 		submit: (e: Event): void => {
 			e.preventDefault();
+			let isValid = true;
+
 			authFormSettings.inputs.forEach((input: Input) => {
-				input.checkValidation();
+				if (!input.checkValidation()) isValid = false;
 			});
+
+			if (!isValid) return;
 
 			let formData = new FormData(<HTMLFormElement>e.target);
 
-			console.log('Auth form: ', Object.fromEntries(formData.entries()));
+			AuthAPI.signIn(Object.fromEntries(formData.entries()))
+				.then(() => {
+					return AuthAPI.getUserInfo();
+				})
+				.then(({ response }: Props) => {
+					let data = JSON.parse(response);
+					console.log(data);
+					if (data.reason) {
+						alert('Неправильный логин или пароль');
+						throw new Error('Неправильный логин или пароль');
+					}
+
+					setUserInfo(data);
+					router.go('/messenger');
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		},
 	},
 	controls: [
 		new Button({
 			attrs: {
-				'data-href': 'chat',
+				'data-href': 'messenger',
 				class: 'btn',
 			},
 			type: 'primary',
@@ -62,7 +88,15 @@ let authFormSettings: Props = {
 			title: 'Нет аккаунта?',
 			type: 'primary',
 			size: 'full',
-			data: { key: 'href', value: 'registration' },
+			attrs: {
+				'data-href': 'sign-up',
+			},
+			events: {
+				click: (e: Event): void => {
+					e.preventDefault();
+					router.go(`/${e.currentTarget?.dataset.href}`);
+				},
+			},
 		}),
 	],
 	inputs: [loginInput, passwordInput],

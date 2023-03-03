@@ -32,8 +32,10 @@ class Input extends Component {
 
 				if (!isValid.result) {
 					this.setProps({ hint: isValid.error, value: input.value });
+					return false;
 				} else {
 					this.setProps({ hint: false, value: input.value });
+					return true;
 				}
 			}
 		}

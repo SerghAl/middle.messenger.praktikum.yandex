@@ -1,0 +1,39 @@
+.chat_user {
+	margin-left: 10px;
+	padding: 10px;
+
+	border-radius: 10px;
+
+	background: var(--color-primary);
+
+	color: white;
+
+	font-size: var(--font-sm);
+}
+
+.chat_user--remove {
+	width: 20px;
+	height: 20px;
+	margin-left: 5px;
+
+	transition: all;
+	transition-duration: 0.5s;
+
+	border: none;
+
+	border-radius: 50%;
+
+	background: var(--color-accent);
+
+	color: white;
+
+	cursor: pointer;
+}
+
+.chat_user--remove:hover {
+	transform: translateY(-3px);
+}
+
+.chat_user--remove:active {
+	transform: translateY(0px);
+}

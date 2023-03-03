@@ -1,0 +1,48 @@
+.addbar {
+	display: flex;
+	position: relative;
+	width: 100%;
+	padding-bottom: 14px;
+}
+
+.addbar--input {
+	box-sizing: border-box;
+	width: 100%;
+	height: 32px;
+	margin-right: 1rem;
+
+	border: none;
+	border-radius: 5px;
+	outline: none;
+
+	background: var(--color-input);
+
+	color: var(--color-secondary);
+	font-size: var(--font-sm);
+	text-align: center;
+	appearance: none;
+}
+
+.addbar--input::placeholder {
+	color: var(--color-secondary);
+}
+
+.addbar--btn {
+	flex-shrink: 0;
+	width: 32px;
+	height: 32px;
+
+	border: none;
+
+	border-radius: 50%;
+
+	background: var(--color-secondary);
+
+	color: white;
+
+	font-size: var(--font-xl);
+}
+
+.addbar--btn:hover {
+	cursor: pointer;
+}

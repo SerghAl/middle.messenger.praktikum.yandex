@@ -1,24 +1,19 @@
-import { getRoute, setRoute, ROUTES } from './utils/router';
-import EventEmitter from './utils/event_bus';
+// import EventEmitter from './utils/event_bus';
 import authData from './fixtures/authorization';
 import chatsData from './fixtures/chats';
-import dialogueData from './fixtures/dialogue';
+import profileData from './fixtures/profile';
+import regData from './fixtures/registration';
 
-export const dispatcher = new EventEmitter();
+// export const dispatcher = new EventEmitter();
+import { Router, ROUTES } from './utils/Router/index';
 
-dispatcher.on('loadChat', (): void => {
-	let dialogue = dialogueData;
+const router = new Router('.app');
 
-	setRoute(ROUTES.CHAT, { ...chatsData, dialogue });
-});
-
-let navLinks = Array.from(document.querySelectorAll('.main_nav--link'));
-
-navLinks.forEach((link) => {
-	link.addEventListener('click', (e: Event) => {
-		e.preventDefault();
-		getRoute(e);
-	});
-});
-
-setRoute(ROUTES.AUTHORIZATION, authData);
+router
+	.use('/', ROUTES.AUTHORIZATION, authData)
+	.use('/sign-up', ROUTES.REGISTRATION, regData)
+	.use('/settings', ROUTES.PROFILE, profileData)
+	.use('/messenger', ROUTES.CHAT, chatsData)
+	.use('/404', ROUTES.UNFOUND, {})
+	.use('/500', ROUTES.ERROR, {})
+	.start();

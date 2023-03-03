@@ -15,7 +15,7 @@ class Message extends Component {
 			styles += ' message-with_image';
 		}
 
-		super('div', { ...props, attrs: { class: styles } });
+		super('div', { ...props, attrs: { class: styles, ...props.attrs } });
 	}
 
 	render() {

@@ -1,5 +1,7 @@
 .chat_page {
 	display: flex;
+	position: fixed;
+	width: 100%;
 	min-height: inherit;
 }
 
@@ -31,6 +33,24 @@
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
+
+	max-height: 70vh;
+	padding-right: 10px;
+	overflow-y: scroll;
+
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-primary) var(--color-secondary);
+}
+
+.chat_dialogue--messages::-webkit-scrollbar {
+	width: 5px;
+
+	background-color: var(--color-primary); /* or add it to the track */
+}
+
+/* Add a thumb */
+.chat_dialogue--messages::-webkit-scrollbar-thumb {
+	background: var(--color-secondary);
 }
 
 .chat_dialogue--filler {

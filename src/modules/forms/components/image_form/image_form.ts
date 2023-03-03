@@ -1,6 +1,5 @@
 import tpl from './image_form.hbs';
 import './image_form.css';
-
 import Component from '../../../../utils/component';
 
 class ImageForm extends Component {
@@ -8,25 +7,23 @@ class ImageForm extends Component {
 		super('form', {
 			...props,
 			attrs: {
-				class: 'image_form',
-				events: {
-					change: (e: Event) => {
-						e.preventDefault();
-
-						let preview = <HTMLImageElement>(
-							document.querySelector('.image_form--img')
-						);
-						if (preview) {
-							preview.src = URL.createObjectURL(this._element.files[0]);
-						}
-					},
-				},
+				...props.attrs,
+				class: props.attrs?.class
+					? `image_form ${props.attrs.class}`
+					: 'image_form',
 			},
 		});
 	}
 
+	addEvents(): void {
+		let input = this._element.querySelector('input');
+		if (input) {
+			super.addEvents(input);
+		}
+	}
+
 	render() {
-		return this.compile(tpl);
+		return this.compile(tpl, this.props);
 	}
 }
 

@@ -28,6 +28,11 @@
 	background: var(--color-secondary);
 }
 
+.image_form--label.chat--label {
+	width: 47px;
+	height: 47px;
+}
+
 .chat--msg_info {
 	flex-grow: 2;
 }
@@ -78,4 +83,28 @@
 
 	color: white;
 	font-size: var(--font-sm);
+}
+
+.chat--btn_del {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+
+	border: none;
+	border-radius: 50%;
+
+	background: var(--color-accent);
+
+	color: white;
+	font-size: var(--font-xl);
+}
+
+.chat--btn_del:hover {
+	cursor: pointer;
+}
+
+.chat--controls {
+	display: flex;
 }

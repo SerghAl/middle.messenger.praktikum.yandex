@@ -3,7 +3,7 @@ import './forms.css';
 import Component from '../../utils/component';
 
 class Form extends Component {
-	constructor(props: { [key: PropertyKey]: any }) {
+	constructor(props: Props) {
 		super('div', { ...props, attr: { class: 'form--container' } });
 	}
 

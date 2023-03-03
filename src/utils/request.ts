@@ -1,5 +1,6 @@
 type RequestOptions = { [key: string]: any };
 type HTTPMethod = (url: string, options?: RequestOptions) => Promise<unknown>;
+import { BASE_URL } from '../settings/constants';
 
 const METHODS = {
 	GET: 'GET',
@@ -13,10 +14,18 @@ function queryStringify(data: { [key: PropertyKey]: string | number }) {
 	return `?${newData.join('&')}`;
 }
 
-class HTTPTransport {
+export default class HTTPTransport {
+	BASE_URL: string;
+
+	constructor(endpoint: string) {
+		this.BASE_URL = `${BASE_URL}${endpoint}`;
+	}
+
 	get: HTTPMethod = (url, options = {}) => {
+		let queryUrl = options.data ? `${url}${queryStringify(options.data)}` : url;
+
 		return this.request(
-			url,
+			`${this.BASE_URL}${queryUrl}`,
 			{ ...options, method: METHODS.GET },
 			options.timeout
 		);
@@ -24,7 +33,7 @@ class HTTPTransport {
 
 	post: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.POST },
 			options.timeout
 		);
@@ -32,7 +41,7 @@ class HTTPTransport {
 
 	put: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.PUT },
 			options.timeout
 		);
@@ -40,15 +49,14 @@ class HTTPTransport {
 
 	delete: HTTPMethod = (url, options = {}) => {
 		return this.request(
-			url,
+			`${this.BASE_URL}${url}`,
 			{ ...options, method: METHODS.DELETE },
 			options.timeout
 		);
 	};
 
 	request = (url: string, options: RequestOptions = {}, timeout = 5000) => {
-		const { headers = {}, method, data } = options;
-
+		const { headers = {}, method, data = {} } = options;
 		return new Promise(function (resolve, reject): void {
 			if (!method) {
 				reject('No method');
@@ -56,9 +64,10 @@ class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
-			const isGet = method === METHODS.GET;
 
-			xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+			xhr.open(method, url);
+
+			xhr.withCredentials = true;
 
 			Object.keys(headers).forEach((key) => {
 				xhr.setRequestHeader(key, headers[key]);
@@ -74,11 +83,7 @@ class HTTPTransport {
 			xhr.timeout = timeout;
 			xhr.ontimeout = reject;
 
-			if (isGet || !data) {
-				xhr.send();
-			} else {
-				xhr.send(data);
-			}
+			xhr.send(data);
 		});
 	};
 }

@@ -1,12 +1,8 @@
-{{#if img}}
-	<img
-		src='{{img}}'
-		alt='Изображение профиля {{chatTitle}}'
-		class='chat--icon'
-	/>
-{{else}}
-	<div class='chat--icon'></div>
-{{/if}}
+<div class='chat--icon'>
+	{{#if chatImg}}
+		{{{chatImg}}}
+	{{/if}}
+</div>
 <div class='chat--msg_info'>
 	<h3 class='chat--title'>{{chatTitle}}</h3>
 	<p class='chat--msg'>
@@ -15,8 +11,15 @@
 	</p>
 </div>
 <div class='chat--meta'>
-	<span class='chat--time'>{{chatTime}}</span>
-	{{#if chatNewMsgs}}
-		<span class='chat--new_msgs'>{{chatNewMsgs}}</span>
+
+	{{#if chatTime}}
+		<span class='chat--time'>{{chatTime}}</span>
 	{{/if}}
+	<div class='chat--controls'>
+		{{#if chatNewMsgs}}
+			<span class='chat--new_msgs'>{{chatNewMsgs}}</span>
+		{{/if}}
+		{{{delBtn}}}
+	</div>
+
 </div>
