@@ -18,3 +18,9 @@ type TStore = {
 	dialogueMessages: unknown;
 	userInfo: unknown;
 };
+
+type AddHooksSocket = {
+	afterMessage?: Function;
+};
+
+type TExtendedSocket = AddHooksSocket & WebSocket;

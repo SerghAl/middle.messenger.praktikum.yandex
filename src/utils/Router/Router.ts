@@ -1,6 +1,5 @@
 import Component from '../component';
-import { ROUTES, Route } from '.';
-import AuthAPI from '../../api/auth_api';
+import { Route } from '.';
 import { getUserInfo } from '../Store/Actions';
 
 export default class Router {
@@ -23,7 +22,11 @@ export default class Router {
 		Router.__instance = this;
 	}
 
-	use(pathname: string, component: Component, props: Props = {}): Router {
+	use(
+		pathname: string,
+		component: typeof Component,
+		props: Props = {}
+	): Router {
 		const route = new Route(pathname, component, {
 			...props,
 			rootQuery: this._rootQuery,
@@ -35,10 +38,8 @@ export default class Router {
 	}
 
 	start(): void {
-		window.onpopstate = ((event: PopStateEvent) => {
-			if (event.currentTarget && event.currentTarget.location) {
-				this._onRoute(event.currentTarget.location.pathname);
-			}
+		window.onpopstate = (() => {
+			this._onRoute(window.location.pathname);
 		}).bind(this);
 
 		this._onRoute(window.location.pathname);

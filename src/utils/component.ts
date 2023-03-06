@@ -252,4 +252,10 @@ class Component {
 	}
 }
 
+export class ExtendedComponent extends Component {
+	constructor(props: Props) {
+		super('div', props);
+	}
+}
+
 export default Component;

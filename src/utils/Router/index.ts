@@ -1,12 +1,12 @@
 import Route from './Route';
 import Router from './Router';
-import Component from '../component';
 import ChatView from '../../pages/chat';
 import ProfileView from '../../pages/profile';
 import UnfoundView from '../../pages/404';
 import ErrorView from '../../pages/500';
 import AuthorizationView from '../../pages/authorization';
 import RegistrationView from '../../pages/registration/registration';
+import Component from '../component';
 
 const ROUTES: { [key: string]: Component } = {
 	CHAT: ChatView,
