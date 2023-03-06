@@ -43,7 +43,7 @@ export default class Route {
 
 	render(): void {
 		if (!this._component) {
-			this._component = new this._componentClass('div', this._props); //fix first arg
+			this._component = new this._componentClass(this._props);
 
 			render(this._props.rootQuery, this._component);
 			return;

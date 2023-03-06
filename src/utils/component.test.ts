@@ -3,7 +3,7 @@ import { compile } from 'handlebars';
 
 class TemplateComponent extends Component {
 	constructor(props: Props) {
-		super('div', { ...props });
+		super({ ...props }, 'div');
 	}
 	render() {
 		return this.compile(compile('{{content}}'));
@@ -12,16 +12,19 @@ class TemplateComponent extends Component {
 
 describe('Тестирование жизненного цикла компонента', () => {
 	test('Создание компонента', function () {
-		let div = new Component('div', {});
+		let div = new Component({}, 'div');
 		expect(div.getContent().outerHTML).toBe('<div></div>');
 	});
 
 	test('Добавление атрибутов к компоненту', function () {
-		let div = new Component('div', {
-			attrs: {
-				id: 'divId',
+		let div = new Component(
+			{
+				attrs: {
+					id: 'divId',
+				},
 			},
-		});
+			'div'
+		);
 		expect(div.getContent().outerHTML).toBe('<div id="divId"></div>');
 	});
 

@@ -10,14 +10,17 @@ class Input extends Component {
 			styles += props.attrs.class ? ` ${props.attrs.class}` : '';
 		}
 
-		super('div', {
-			...props,
-			attrs: { class: styles },
-		});
+		super(
+			{
+				...props,
+				attrs: { class: styles },
+			},
+			'div'
+		);
 	}
 
 	addEvents(): void {
-		let input = this._element.querySelector('input');
+		let input = this.getContent().querySelector('input');
 		if (input) {
 			super.addEvents(input);
 		}
@@ -25,7 +28,7 @@ class Input extends Component {
 
 	checkValidation() {
 		if (this.props.validator) {
-			let input = this._element.querySelector('input');
+			let input = this.getContent().querySelector('input');
 
 			if (input) {
 				let isValid = this.props.validator(input.value);

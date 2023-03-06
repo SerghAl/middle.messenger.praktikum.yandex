@@ -9,7 +9,7 @@ class Search extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('form', { ...props, attrs: { ...props.attrs, class: styles } });
+		super({ ...props, attrs: { ...props.attrs, class: styles } }, 'form');
 	}
 
 	render() {

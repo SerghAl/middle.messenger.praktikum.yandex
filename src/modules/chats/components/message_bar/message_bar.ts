@@ -4,11 +4,11 @@ import Component from '../../../../utils/component';
 
 class MessageBar extends Component {
 	constructor(props: Props) {
-		super('div', { ...props, attrs: { class: 'message_bar' } });
+		super({ ...props, attrs: { class: 'message_bar' } }, 'div');
 	}
 
 	addEvents(): void {
-		let input = this._element.querySelector('form');
+		let input = this.getContent().querySelector('form');
 		if (input) {
 			super.addEvents(input);
 		}

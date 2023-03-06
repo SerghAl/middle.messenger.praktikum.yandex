@@ -40,7 +40,7 @@ import ImageForm from '../modules/forms/components/image_form';
 import { BASE_URL } from '../settings/constants';
 import ChatUsersList from '../modules/chats/components/chat_users_list';
 
-let socket: WebSocket | null = null;
+let socket: TExtendedSocket | null = null;
 let ProfileBarConnect = connect(ProfileBar, (store: TStore) => {
 	return {
 		title: getChatTitle(),
@@ -48,7 +48,7 @@ let ProfileBarConnect = connect(ProfileBar, (store: TStore) => {
 	};
 });
 
-let ChatImageFormClass = connect(ImageForm, (store: TStore) => {});
+let ChatImageFormClass = connect(ImageForm, () => {});
 
 let chatListConnect = connect(ChatList, (store: TStore) => {
 	return {
@@ -73,8 +73,9 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 							change: (e: Event) => {
 								e.preventDefault();
 								e.stopPropagation();
+								let target = <HTMLElement>e.currentTarget;
 								let formData = new FormData(
-									<HTMLFormElement>e.currentTarget?.parentNode.parentNode
+									<HTMLFormElement>target?.parentNode?.parentNode
 								);
 
 								formData.append('chatId', chat.id);
@@ -108,7 +109,8 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 							click: (e: Event) => {
 								e.preventDefault();
 								e.stopPropagation();
-								let chatId = e.currentTarget?.dataset.id;
+								let target = <HTMLElement>e.currentTarget;
+								let chatId = target?.dataset.id;
 								let data = { chatId };
 
 								let agreement = confirm('Вы уверены, что хотите удалить чат?');
@@ -138,7 +140,7 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 
 								target.classList.add('chat-selected');
 
-								let chatId = target.dataset.id;
+								let chatId = target.dataset.id || '';
 								let userId = getUserInfo().id;
 								let token = null;
 
@@ -223,8 +225,10 @@ let messageBarSettings: Props = {
 
 			if (socket) {
 				socket.afterMessage = () => {
-					messageInput._element.value = null;
-					messageInput._element.focus();
+					let messageInputElement = <HTMLInputElement>messageInput.getContent();
+
+					messageInputElement.value = '';
+					messageInputElement.focus();
 
 					let messages = document.querySelector('.chat_dialogue--messages');
 					messages?.scrollBy(0, messages?.scrollHeight);
@@ -256,7 +260,9 @@ export default {
 		events: {
 			click: (e: Event): void => {
 				e.preventDefault();
-				router.go(`/${e.target.dataset.href}`);
+
+				let target = <HTMLElement>e.target;
+				router.go(`/${target?.dataset.href}`);
 			},
 		},
 	}),
@@ -267,18 +273,19 @@ export default {
 		events: {
 			submit: (e: Event) => {
 				e.preventDefault();
-
-				let formData = new FormData(e.target);
+				let form = <HTMLFormElement>e.target;
+				let formData = new FormData(form);
 
 				let data = Object.fromEntries(formData.entries());
 
 				ChatAPI.createChat(data)
-					.then(({ response }) => {
+					.then(() => {
 						return ChatAPI.getChats();
 					})
 					.then(({ response }) => {
 						setChats(JSON.parse(response));
-						Array.from(e.target?.elements).forEach((element) => {
+
+						Array.from(form?.elements).forEach((element: HTMLInputElement) => {
 							if (element.type !== 'submit') {
 								element.value = '';
 							}
@@ -294,8 +301,8 @@ export default {
 		events: {
 			input: debounce((e: Event) => {
 				e.preventDefault();
-				let input = e.target;
-				let form = input.parentNode;
+				let input = <HTMLInputElement>e.target;
+				let form = <HTMLFormElement>input?.parentNode;
 				let prevModal = form.querySelector('.modal');
 				let data = { login: input?.value };
 				let chatId = getChatId();
@@ -310,11 +317,12 @@ export default {
 							events: {
 								click: (e: Event) => {
 									e.preventDefault();
-									let userId = e.currentTarget.dataset.id;
+									let target = <HTMLElement>e.currentTarget;
+									let userId = target?.dataset?.id || '';
 									let users = [userId];
 
 									ChatAPI.addUsersToChat(chatId, users)
-										.then(({ response }) => {
+										.then(() => {
 											return ChatAPI.getChatUsers(chatId);
 										})
 										.then(({ response }) => {
@@ -337,16 +345,19 @@ export default {
 	messageList: new MessageList({
 		events: {
 			scroll: (e: Event) => {
-				let scrollTop = e.target?.scrollTop;
+				let target = <HTMLElement>e.target;
+				let scrollTop = target?.scrollTop;
 				let dialogueMessages = getDialogueMessages();
 				let messages = document.querySelector('.chat_dialogue--messages');
-				let scrollToElementId = messages?.firstElementChild.id;
+				let scrollToElementId = messages?.firstElementChild?.id || '';
 
 				if (scrollTop === 0) {
-					socket.afterMessage = () => {
-						let scrollToElement = document.getElementById(scrollToElementId);
-						scrollToElement?.scrollIntoView();
-					};
+					if (socket && scrollToElementId) {
+						socket.afterMessage = () => {
+							let scrollToElement = document.getElementById(scrollToElementId);
+							scrollToElement?.scrollIntoView();
+						};
+					}
 
 					socket?.send(
 						JSON.stringify({

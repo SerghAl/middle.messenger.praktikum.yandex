@@ -18,7 +18,7 @@ class IconButton extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('button', { ...props, attrs: { class: styles, ...props.attrs } });
+		super({ ...props, attrs: { class: styles, ...props.attrs } }, 'button');
 	}
 
 	render() {

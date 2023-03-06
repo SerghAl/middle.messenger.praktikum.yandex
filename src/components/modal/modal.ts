@@ -3,17 +3,17 @@ import './modal.css';
 import Component from '../../utils/component';
 
 class Modal extends Component {
-	constructor(props: { [key: PropertyKey]: any }) {
+	constructor(props: Props) {
 		let styles = 'modal';
 
-		super('div', { ...props, attrs: { class: styles } });
+		super({ ...props, attrs: { class: styles } }, 'div');
 	}
 
 	addEvents(): void {
 		let closeBtn = this._element.querySelector('.modal--close');
 		closeBtn?.addEventListener('click', (e) => {
 			e.preventDefault();
-			let parent = this._element.parentNode;
+			let parent = <HTMLFormElement>this._element.parentNode;
 			parent?.removeChild(this._element);
 
 			if (parent?.tagName === 'FORM') {

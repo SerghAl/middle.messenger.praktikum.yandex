@@ -5,7 +5,7 @@ import Message from '../message';
 
 export default connect(MessageList, (state: Props) => {
 	return {
-		dialogueMessages: state.dialogueMessages?.map((msg) => {
+		dialogueMessages: state.dialogueMessages?.map((msg: Props) => {
 			let isOwn = isUserMessage(msg.user_id);
 			return new Message({
 				formatTime: msg.formatTime,

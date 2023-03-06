@@ -4,19 +4,22 @@ import Component from '../../../../utils/component';
 
 class ImageForm extends Component {
 	constructor(props: Props) {
-		super('form', {
-			...props,
-			attrs: {
-				...props.attrs,
-				class: props.attrs?.class
-					? `image_form ${props.attrs.class}`
-					: 'image_form',
+		super(
+			{
+				...props,
+				attrs: {
+					...props.attrs,
+					class: props.attrs?.class
+						? `image_form ${props.attrs.class}`
+						: 'image_form',
+				},
 			},
-		});
+			'form'
+		);
 	}
 
 	addEvents(): void {
-		let input = this._element.querySelector('input');
+		let input = this.getContent().querySelector('input');
 		if (input) {
 			super.addEvents(input);
 		}

@@ -74,7 +74,7 @@ export default class ChatAPI extends BaseAPI {
 		});
 	}
 
-	static addUsersToChat(chatId: number, users: Array<number>) {
+	static addUsersToChat(chatId: number, users: Array<string>) {
 		return chatAPIInstance.put('/users', {
 			headers: {
 				'Content-Type': 'application/json',

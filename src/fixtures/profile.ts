@@ -231,8 +231,9 @@ export default function getProfileData(userInfo: any) {
 		events: {
 			change: (e: Event) => {
 				e.preventDefault();
+				let target = <HTMLElement>e.currentTarget;
 				let formData = new FormData(
-					<HTMLFormElement>e.currentTarget?.parentNode.parentNode
+					<HTMLFormElement>target?.parentNode?.parentNode
 				);
 
 				UserAPI.changeAvatar(formData)
@@ -251,7 +252,8 @@ export default function getProfileData(userInfo: any) {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget?.dataset.href}`);
+					let target = <HTMLElement>e.currentTarget;
+					router.go(`/${target?.dataset.href}`);
 				},
 			},
 			attrs: {

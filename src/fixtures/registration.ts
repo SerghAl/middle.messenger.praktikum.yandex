@@ -124,7 +124,8 @@ let regFormSettings: Props = {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget.dataset.href}`);
+					let target = <HTMLElement>e.currentTarget;
+					router.go(`/${target?.dataset?.href}`);
 				},
 			},
 		}),

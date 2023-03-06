@@ -8,7 +8,7 @@ class Component {
 	_id;
 
 	private _meta: { tagName: string; propsAndChildren: Props };
-	protected _element: HTMLElement;
+	private _element: HTMLElement;
 
 	static EVENTS: { [key: PropertyKey]: string } = {
 		INIT: 'init',
@@ -17,7 +17,7 @@ class Component {
 		FLOW_RENDER: 'flow:render',
 	};
 
-	constructor(tagName: string = 'div', propsAndChildren: Props = {}) {
+	constructor(propsAndChildren: Props = {}, tagName: string = 'div') {
 		this._meta = {
 			tagName,
 			propsAndChildren,
@@ -249,12 +249,6 @@ class Component {
 
 	hide() {
 		this.getContent().classList.add('hidden');
-	}
-}
-
-export class ExtendedComponent extends Component {
-	constructor(props: Props) {
-		super('div', props);
 	}
 }
 

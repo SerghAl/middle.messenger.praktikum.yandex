@@ -1,6 +1,6 @@
 export default function debounce(fn: Function, delay: number) {
-	let timer: null | Function = null;
-	return (...args) => {
+	let timer: ReturnType<typeof setTimeout> | null;
+	return (...args: unknown[]) => {
 		if (timer) {
 			clearTimeout(timer);
 		}

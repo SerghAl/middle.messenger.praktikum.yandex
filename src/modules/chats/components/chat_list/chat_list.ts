@@ -4,9 +4,12 @@ import Component from '../../../../utils/component';
 
 class ChatList extends Component {
 	constructor(props: Props) {
-		super('ul', {
-			...props,
-		});
+		super(
+			{
+				...props,
+			},
+			'ul'
+		);
 	}
 
 	render() {

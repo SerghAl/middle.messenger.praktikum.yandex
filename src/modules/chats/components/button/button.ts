@@ -4,7 +4,7 @@ import Component from '../../../../utils/component';
 
 class TextArrowButton extends Component {
 	constructor(props: Props) {
-		super('a', { ...props });
+		super({ ...props }, 'a');
 	}
 
 	render() {

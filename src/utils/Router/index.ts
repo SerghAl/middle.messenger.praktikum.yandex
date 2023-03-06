@@ -8,7 +8,7 @@ import AuthorizationView from '../../pages/authorization';
 import RegistrationView from '../../pages/registration/registration';
 import Component from '../component';
 
-const ROUTES: { [key: string]: Component } = {
+const ROUTES: { [key: string]: typeof Component } = {
 	CHAT: ChatView,
 	PROFILE: ProfileView,
 	UNFOUND: UnfoundView,
