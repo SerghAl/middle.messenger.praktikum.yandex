@@ -87,7 +87,10 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 										setDialogue({
 											title: chat.title,
 											id: chat.id,
-											avatar: `${BASE_URL}/resources${data.avatar}`,
+											avatar:
+												chat && chat.avatar
+													? `${BASE_URL}/resources${chat.avatar}`
+													: personImg,
 										});
 									})
 									.catch((error) => {

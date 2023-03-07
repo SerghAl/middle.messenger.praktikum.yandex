@@ -1,8 +1,8 @@
 {
-	"name": "snowball_messenger",
+	"name": "my-webpack-project",
 	"version": "1.0.0",
-	"description": "My own messenger",
-	"source": "./src/index.html",
+	"description": "My webpack project",
+	"private": true,
 	"browserslist": "last 2 versions",
 	"engines": {
 		"node": ">=18.12.1",
@@ -10,37 +10,49 @@
 	},
 	"scripts": {
 		"test": "jest",
-		"start": "ts-node server.ts --open",
-		"dev": "parcel --open",
-		"build": "parcel build"
+		"build": "webpack --mode=production --node-env=production",
+		"build:dev": "webpack --mode=development",
+		"build:prod": "webpack --mode=production --node-env=production",
+		"watch": "webpack --watch",
+		"serve": "webpack serve"
 	},
 	"author": "Sergey Alabuzhev",
 	"license": "ISC",
 	"devDependencies": {
-		"@parcel/transformer-inline-string": "2.8.2",
 		"@types/jest": "29.4.0",
 		"@types/uuid": "9.0.1",
+		"@webpack-cli/generators": "3.0.1",
+		"autoprefixer": "10.4.13",
+		"css-loader": "6.7.3",
 		"eslint": "8.2.0",
 		"eslint-config-airbnb-base": "15.0.0",
 		"eslint-plugin-import": "2.25.2",
 		"handlebars-jest": "1.0.0",
+		"html-webpack-plugin": "^5.5.0",
 		"jest": "29.4.3",
 		"jest-environment-jsdom": "29.4.3",
 		"jest-transform-stub": "2.0.0",
 		"jsdom": "21.1.0",
-		"parcel": "2.8.2",
-		"parcel-transformer-hbs": "1.0.4",
+		"mini-css-extract-plugin": "2.7.2",
 		"postcss": "8.4.21",
+		"postcss-loader": "7.0.2",
+		"prettier": "2.8.2",
+		"style-loader": "3.3.1",
 		"stylelint": "14.16.1",
 		"stylelint-config-property-sort-order-smacss": "9.0.0",
 		"stylelint-order": "6.0.1",
 		"ts-jest": "29.0.5",
+		"ts-loader": "9.4.2",
 		"ts-node": "10.9.1",
-		"typescript": "4.9.4"
+		"typescript": "4.9.4",
+		"webpack": "5.75.0",
+		"webpack-cli": "5.0.1",
+		"webpack-dev-server": "4.11.1"
 	},
 	"dependencies": {
 		"express": "4.18.2",
 		"handlebars": "4.7.7",
+		"handlebars-loader": "^1.7.3",
 		"uuid": "9.0.0"
 	}
 }

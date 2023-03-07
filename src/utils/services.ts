@@ -1,14 +1,30 @@
 import { getChatUsers, setDialogueMessages } from './Store/Actions';
 import { formatDate } from './formatter';
 
+export class ExtendedSocket {
+	socket: TExtendedSocket;
+	static _instance: ExtendedSocket;
+
+	constructor(path: string) {
+		if (this.socket) {
+			return ExtendedSocket._instance;
+		}
+
+		ExtendedSocket._instance = this;
+		this.socket = new WebSocket(path);
+	}
+}
+
 export default function connectToChat(
 	userId: string,
 	chatId: string,
 	token: string
 ) {
-	const socket: TExtendedSocket = new WebSocket(
+	const extendedSocket = new ExtendedSocket(
 		`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`
 	);
+
+	const socket = extendedSocket.socket;
 
 	let connection: ReturnType<typeof setInterval>;
 

@@ -214,7 +214,9 @@ let profileFormSettings = {
 
 let profileImageFormClass = connect(ImageForm, (store: TStore) => {
 	return {
-		value: `${BASE_URL}/resources${store.userInfo?.avatar}`,
+		value: store.userInfo?.avatar
+			? `${BASE_URL}/resources${store.userInfo?.avatar}`
+			: store.userInfo?.avatar,
 	};
 });
 let profileImageForm = new profileImageFormClass({
