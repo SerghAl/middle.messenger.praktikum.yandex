@@ -6,7 +6,7 @@ export const setUserInfo = (data: Props) => {
 	store.set('userInfo', data);
 };
 
-export const getUserInfo = () => {
+export const getUserInfo = (): Props | null => {
 	let state = store.getState();
 	let userInfo = state.userInfo;
 	if (userInfo) {

@@ -141,7 +141,7 @@ let chatListConnect = connect(ChatList, (store: TStore) => {
 								target.classList.add('chat-selected');
 
 								let chatId = target.dataset.id || '';
-								let userId = getUserInfo().id;
+								let userId = getUserInfo()?.id;
 								let token = null;
 
 								if (Number(chatId) === Number(getCurrentChat())) {

@@ -3,9 +3,9 @@ import { Route } from '.';
 import { getUserInfo } from '../Store/Actions';
 
 export default class Router {
-	static __instance: Router;
+	static __instance: Router | null;
 	public routes: Array<Route>;
-	public history: History;
+	public history: History | null;
 	private _currentRoute: Route | null;
 	private _rootQuery: string;
 
@@ -20,6 +20,10 @@ export default class Router {
 		this._rootQuery = rootQuery;
 
 		Router.__instance = this;
+	}
+
+	static cleanInatance(rootQuery: string) {
+		this.__instance = new Router(rootQuery);
 	}
 
 	use(
@@ -76,16 +80,16 @@ export default class Router {
 	}
 
 	go(pathname: string): void {
-		this.history.pushState({}, '', pathname);
+		this.history?.pushState({}, '', pathname);
 		this._onRoute(pathname);
 	}
 
 	back(): void {
-		this.history.back();
+		this.history?.back();
 	}
 
 	forward(): void {
-		this.history.forward();
+		this.history?.forward();
 	}
 
 	getRoute(pathname: string): Route | undefined {

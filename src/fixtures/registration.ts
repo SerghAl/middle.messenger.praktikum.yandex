@@ -155,7 +155,8 @@ let regFormSettings: Props = {
 			let data = Object.fromEntries(formData.entries());
 
 			AuthAPI.signUp(data)
-				.then(() => {
+				.then(({ response }) => {
+					console.log(JSON.parse(response));
 					return AuthAPI.signIn({ login: data.login, password: data.password });
 				})
 				.then(() => {

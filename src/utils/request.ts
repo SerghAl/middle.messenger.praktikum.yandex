@@ -17,8 +17,8 @@ function queryStringify(data: { [key: PropertyKey]: string | number }) {
 export default class HTTPTransport {
 	BASE_URL: string;
 
-	constructor(endpoint: string) {
-		this.BASE_URL = `${BASE_URL}${endpoint}`;
+	constructor(endpoint: string, baseUrl: string = BASE_URL) {
+		this.BASE_URL = `${baseUrl}${endpoint}`;
 	}
 
 	get: HTTPMethod = (url, options = {}) => {
