@@ -1,8 +1,6 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/3904327e-1296-4a8c-9d99-56408df82a4c/deploy-status)](https://app.netlify.com/sites/chic-sunburst-b58aa5/deploys)
-
 ### Демо
 
-Проект на Netlify: https://chic-sunburst-b58aa5.netlify.app
+Проект на Render.com: https://mountain-messenger.onrender.com
 
 ### Дизайн мессенджера
 
