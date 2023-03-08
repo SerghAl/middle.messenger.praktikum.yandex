@@ -14,12 +14,11 @@
 		"build:dev": "webpack --mode=development",
 		"build:prod": "webpack --mode=production --node-env=production",
 		"watch": "webpack --watch",
-		"serve": "webpack serve",
-		"pre-commit": "npm run test"
+		"serve": "webpack serve"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "npm run test"
+			"pre-commit": "npm-run-all test lint:all"
 		}
 	},
 	"author": "Sergey Alabuzhev",
