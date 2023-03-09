@@ -15,8 +15,7 @@
 		"build:prod": "webpack --mode=production --node-env=production",
 		"watch": "webpack --watch",
 		"serve": "webpack serve",
-		"lint": "lint-staged",
-		"pre-commit": "npm-run-all test lint"
+		"lint": "lint-staged"
 	},
 	"husky": {
 		"hooks": {
