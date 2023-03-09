@@ -1,6 +1,6 @@
 import HTTPTransport from './request';
 
-let testBaseUrl = 'https://jsonplaceholder.typicode.com';
+const testBaseUrl = 'https://jsonplaceholder.typicode.com';
 
 // данные для тестирования взяты с https://jsonplaceholder.typicode.com/guide/
 

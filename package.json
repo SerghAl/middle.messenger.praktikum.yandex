@@ -14,7 +14,8 @@
 		"build:dev": "webpack --mode=development",
 		"build:prod": "webpack --mode=production --node-env=production",
 		"watch": "webpack --watch",
-		"serve": "webpack serve"
+		"serve": "webpack serve",
+		"lint": "lint-staged"
 	},
 	"husky": {
 		"hooks": {
@@ -40,6 +41,7 @@
 		"jest-environment-jsdom": "29.4.3",
 		"jest-transform-stub": "2.0.0",
 		"jsdom": "21.1.0",
+		"lint-staged": "^13.1.2",
 		"mini-css-extract-plugin": "2.7.2",
 		"postcss": "8.4.21",
 		"postcss-loader": "7.0.2",
