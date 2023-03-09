@@ -35,7 +35,6 @@ class ChatView extends Component {
 		setDialogue(null);
 		clearDialogueMessages();
 		ChatAPI.getChats().then(({ response }) => {
-			console.log(JSON.parse(response));
 			setChats(JSON.parse(response));
 		});
 	}

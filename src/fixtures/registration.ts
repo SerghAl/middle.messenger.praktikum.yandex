@@ -12,8 +12,10 @@ import {
 import AuthAPI from '../api/auth_api';
 import { Router } from '../utils/Router';
 import { setUserInfo } from '../utils/Store/Actions';
+import Store from '../utils/Store/Store';
 
-let router = new Router('.app');
+const router = new Router('.app');
+const store = new Store();
 
 let emailInput = new Input({
 	type: 'email',
@@ -163,6 +165,7 @@ let regFormSettings: Props = {
 					return AuthAPI.getUserInfo();
 				})
 				.then(({ response }: Props) => {
+					store.removeState();
 					setUserInfo(JSON.parse(response));
 					router.go('/messenger');
 				})
