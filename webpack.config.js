@@ -1,6 +1,7 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -8,14 +9,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const stylesHandler = MiniCssExtractPlugin.loader;
 
-const config = {
+const commonConfig = {
 	entry: './src/index.ts',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-	},
-	devServer: {
-		open: true,
-		host: 'localhost',
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -47,11 +44,22 @@ const config = {
 	},
 };
 
+const developmentConfig = {
+	devServer: {
+		open: true,
+		host: 'localhost',
+	},
+};
+
 module.exports = () => {
-	if (isProduction) {
-		config.mode = 'production';
-	} else {
-		config.mode = 'development';
+	switch (isProduction) {
+		case false:
+			commonConfig.mode = 'development';
+			return merge(commonConfig, developmentConfig);
+		case true:
+			commonConfig.mode = 'production';
+			return merge(commonConfig);
+		default:
+			throw new Error('No matching configuration was found!');
 	}
-	return config;
 };
