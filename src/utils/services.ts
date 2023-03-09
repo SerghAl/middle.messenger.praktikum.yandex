@@ -1,12 +1,32 @@
 import { getChatUsers, setDialogueMessages } from './Store/Actions';
 import { formatDate } from './formatter';
 
-export default function connectToChat(userId, chatId, token) {
-	const socket = new WebSocket(
+export class ExtendedSocket {
+	socket: TExtendedSocket;
+	static _instance: ExtendedSocket;
+
+	constructor(path: string) {
+		if (this.socket) {
+			return ExtendedSocket._instance;
+		}
+
+		ExtendedSocket._instance = this;
+		this.socket = new WebSocket(path);
+	}
+}
+
+export default function connectToChat(
+	userId: string,
+	chatId: string,
+	token: string
+) {
+	const extendedSocket = new ExtendedSocket(
 		`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`
 	);
 
-	let connection;
+	const socket = extendedSocket.socket;
+
+	let connection: ReturnType<typeof setInterval>;
 
 	socket.afterMessage = () => {};
 
@@ -65,11 +85,13 @@ export default function connectToChat(userId, chatId, token) {
 		}
 
 		setDialogueMessages(dialogueData);
-		socket.afterMessage();
+		if (socket.afterMessage) {
+			socket.afterMessage();
+		}
 	});
 
 	socket.addEventListener('error', (event) => {
-		console.log('Ошибка', event.message);
+		console.log('Ошибка', event);
 	});
 
 	return socket;

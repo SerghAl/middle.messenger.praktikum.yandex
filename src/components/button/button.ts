@@ -18,7 +18,7 @@ class Button extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('button', { ...props, attrs: { ...props.attrs, class: styles } });
+		super({ ...props, attrs: { ...props.attrs, class: styles } }, 'button');
 	}
 
 	render() {

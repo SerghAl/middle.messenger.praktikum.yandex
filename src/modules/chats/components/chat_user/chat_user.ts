@@ -7,12 +7,16 @@ class ChatUser extends Component {
 	constructor(props: Props) {
 		let styles = 'chat_user';
 
-		super('li', { ...props, attrs: { class: styles, ...props.attrs } });
+		super({ ...props, attrs: { class: styles, ...props.attrs } }, 'li');
 	}
 
 	addEvents(): void {
-		let btn = this._element.querySelector('.chat_user--remove');
-		super.addEvents(btn);
+		let btn = <HTMLElement>(
+			this.getContent().querySelector('.chat_user--remove')
+		);
+		if (btn) {
+			super.addEvents(btn);
+		}
 	}
 
 	render() {

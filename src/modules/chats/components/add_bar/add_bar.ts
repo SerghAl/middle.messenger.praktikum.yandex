@@ -9,18 +9,18 @@ class AddBar extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('form', { ...props, attrs: { ...props.attrs, class: styles } });
+		super({ ...props, attrs: { ...props.attrs, class: styles } }, 'form');
 	}
 
 	addEvents(): void {
-		let input = this._element.querySelector('input');
+		let input = this.getContent().querySelector('input');
 
 		const { events = {} } = this.props;
 		Object.keys(events).forEach((event: string): void => {
 			if (event !== 'submit') {
 				input?.addEventListener(event, events[event]);
 			} else {
-				this._element.addEventListener(event, events[event]);
+				this.getContent().addEventListener(event, events[event]);
 			}
 		});
 	}

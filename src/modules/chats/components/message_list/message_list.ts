@@ -4,12 +4,15 @@ import Component from '../../../../utils/component';
 
 class MessageList extends Component {
 	constructor(props: Props) {
-		super('div', {
-			...props,
-			attrs: {
-				class: 'chat_dialogue--messages',
+		super(
+			{
+				...props,
+				attrs: {
+					class: 'chat_dialogue--messages',
+				},
 			},
-		});
+			'div'
+		);
 	}
 
 	render() {

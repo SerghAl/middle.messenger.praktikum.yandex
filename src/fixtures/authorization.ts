@@ -6,8 +6,10 @@ import { checkLogin, checkPassword } from '../utils/validation';
 import AuthAPI from '../api/auth_api';
 import { setUserInfo } from '../utils/Store/Actions';
 import { Router } from '../utils/Router';
+import Store from '../utils/Store/Store';
 
-let router = new Router('.app');
+const store = new Store();
+const router = new Router('.app');
 
 let loginInput = new Input({
 	type: 'text',
@@ -65,7 +67,7 @@ let authFormSettings: Props = {
 						alert('Неправильный логин или пароль');
 						throw new Error('Неправильный логин или пароль');
 					}
-
+					store.removeState();
 					setUserInfo(data);
 					router.go('/messenger');
 				})
@@ -94,7 +96,8 @@ let authFormSettings: Props = {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget?.dataset.href}`);
+					let target = <HTMLElement>e.currentTarget;
+					router.go(`/${target?.dataset.href}`);
 				},
 			},
 		}),

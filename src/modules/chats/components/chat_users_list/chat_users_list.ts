@@ -7,7 +7,7 @@ class ChatUsersList extends Component {
 	constructor(props: Props) {
 		let styles = 'chat_users_list';
 
-		super('ul', { ...props, attrs: { class: styles, ...props.attrs } });
+		super({ ...props, attrs: { class: styles, ...props.attrs } }, 'ul');
 	}
 
 	render() {

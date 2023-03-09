@@ -19,12 +19,10 @@ import {
 } from '../../../../utils/Store/Actions';
 import connectToChat from '../../../../utils/services';
 
-export default connect(ChatList, (store) => {
-	let socket = null;
-
+export default connect(ChatList, (store: TStore) => {
 	return {
 		chats: store.chats?.map(
-			(chat) =>
+			(chat: Props) =>
 				new Chat({
 					attrs: {
 						'data-id': chat.id,
@@ -43,11 +41,12 @@ export default connect(ChatList, (store) => {
 							click: (e: Event) => {
 								e.preventDefault();
 								e.stopPropagation();
-								let chatId = e.currentTarget.dataset.id;
+								let target = <HTMLElement>e.currentTarget;
+								let chatId = target.dataset.id;
 								let data = { chatId };
 
 								ChatAPI.deleteChat(data)
-									.then(({ response }) => {
+									.then(() => {
 										return ChatAPI.getChats();
 									})
 									.then(({ response }) => {
@@ -59,23 +58,22 @@ export default connect(ChatList, (store) => {
 					events: {
 						click: (e: Event) => {
 							e.preventDefault();
-
-							if (e.currentTarget.classList.contains('chat-selected')) {
-								e.currentTarget.classList.remove('chat-selected');
+							let target = <HTMLElement>e.currentTarget;
+							if (target.classList.contains('chat-selected')) {
+								target.classList.remove('chat-selected');
 							} else {
 								let prevSelectedChat = document.querySelector('.chat-selected');
 								if (prevSelectedChat) {
 									prevSelectedChat.classList.remove('chat-selected');
 								}
 
-								e.currentTarget.classList.add('chat-selected');
+								target.classList.add('chat-selected');
 
-								let chatId = e.currentTarget.dataset.id;
-								let userId = getUserInfo().id;
+								let chatId = Number(target.dataset.id);
+								let userId = getUserInfo()?.id;
 								let token = null;
-								console.log(chatId, getCurrentChat());
 
-								if (Number(chatId) === Number(getCurrentChat())) {
+								if (chatId === Number(getCurrentChat())) {
 									return;
 								} else {
 									clearDialogueMessages();
@@ -88,7 +86,7 @@ export default connect(ChatList, (store) => {
 										return ChatAPI.requestToken(chatId).then(({ response }) => {
 											token = JSON.parse(response).token;
 											setDialogue({ title: chat.title, id: chat.id });
-											socket = connectToChat(userId, chatId, token);
+											connectToChat(userId, chatId.toString(), token);
 										});
 									})
 									.catch((error) => {

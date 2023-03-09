@@ -12,8 +12,10 @@ import {
 import AuthAPI from '../api/auth_api';
 import { Router } from '../utils/Router';
 import { setUserInfo } from '../utils/Store/Actions';
+import Store from '../utils/Store/Store';
 
-let router = new Router('.app');
+const router = new Router('.app');
+const store = new Store();
 
 let emailInput = new Input({
 	type: 'email',
@@ -124,7 +126,8 @@ let regFormSettings: Props = {
 			events: {
 				click: (e: Event): void => {
 					e.preventDefault();
-					router.go(`/${e.currentTarget.dataset.href}`);
+					let target = <HTMLElement>e.currentTarget;
+					router.go(`/${target?.dataset?.href}`);
 				},
 			},
 		}),
@@ -154,13 +157,15 @@ let regFormSettings: Props = {
 			let data = Object.fromEntries(formData.entries());
 
 			AuthAPI.signUp(data)
-				.then(() => {
+				.then(({ response }) => {
+					console.log(JSON.parse(response));
 					return AuthAPI.signIn({ login: data.login, password: data.password });
 				})
 				.then(() => {
 					return AuthAPI.getUserInfo();
 				})
 				.then(({ response }: Props) => {
+					store.removeState();
 					setUserInfo(JSON.parse(response));
 					router.go('/messenger');
 				})

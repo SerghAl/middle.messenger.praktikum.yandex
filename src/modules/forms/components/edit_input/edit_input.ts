@@ -4,11 +4,11 @@ import Component from '../../../../utils/component';
 
 class EditInput extends Component {
 	constructor(props: Props) {
-		super('div', { ...props, attrs: { class: 'edit_input--container' } });
+		super({ ...props, attrs: { class: 'edit_input--container' } }, 'div');
 	}
 
 	addEvents(): void {
-		let input = this._element.querySelector('input');
+		let input = this.getContent().querySelector('input');
 		if (input) {
 			super.addEvents(input);
 		}
@@ -16,7 +16,7 @@ class EditInput extends Component {
 
 	checkValidation(): boolean {
 		if (this.props.validator) {
-			let input = this._element.querySelector('input');
+			let input = this.getContent().querySelector('input');
 
 			if (input) {
 				let isValid = this.props.validator(input.value);

@@ -3,18 +3,18 @@ import './modal.css';
 import Component from '../../utils/component';
 
 class Modal extends Component {
-	constructor(props: { [key: PropertyKey]: any }) {
+	constructor(props: Props) {
 		let styles = 'modal';
 
-		super('div', { ...props, attrs: { class: styles } });
+		super({ ...props, attrs: { class: styles } }, 'div');
 	}
 
 	addEvents(): void {
-		let closeBtn = this._element.querySelector('.modal--close');
+		let closeBtn = this.getContent().querySelector('.modal--close');
 		closeBtn?.addEventListener('click', (e) => {
 			e.preventDefault();
-			let parent = this._element.parentNode;
-			parent?.removeChild(this._element);
+			let parent = <HTMLFormElement>this.getContent().parentNode;
+			parent?.removeChild(this.getContent());
 
 			if (parent?.tagName === 'FORM') {
 				let inputs = Array.from(parent.elements);
@@ -22,7 +22,7 @@ class Modal extends Component {
 			}
 		});
 
-		let inputs = Array.from(this._element.querySelectorAll('.modal--item'));
+		let inputs = Array.from(this.getContent().querySelectorAll('.modal--item'));
 		if (inputs) {
 			inputs.forEach((input: HTMLElement) => super.addEvents(input));
 		}

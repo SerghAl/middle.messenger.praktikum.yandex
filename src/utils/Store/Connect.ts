@@ -2,10 +2,10 @@ import Component from '../component';
 import Store from './Store';
 
 export default function connect(
-	Component: Component,
+	component: typeof Component,
 	mapStateToProps: Function
 ) {
-	return class extends Component {
+	return class extends component {
 		constructor(props: Props) {
 			const store = new Store();
 			super({ ...props, ...mapStateToProps(store.getState()) });

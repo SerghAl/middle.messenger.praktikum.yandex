@@ -4,10 +4,13 @@ import Component from '../../utils/component';
 
 class Chat extends Component {
 	constructor(props: Props) {
-		super('div', {
-			...props,
-			attrs: { class: 'chat', ...(props.attrs || {}) },
-		});
+		super(
+			{
+				...props,
+				attrs: { class: 'chat', ...(props.attrs || {}) },
+			},
+			'div'
+		);
 	}
 
 	render() {

@@ -16,7 +16,7 @@ class ChatView extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
+		super({ ...props, attrs: { ...props.attrs, class: styles } }, 'main');
 	}
 
 	render() {
@@ -35,7 +35,6 @@ class ChatView extends Component {
 		setDialogue(null);
 		clearDialogueMessages();
 		ChatAPI.getChats().then(({ response }) => {
-			console.log(JSON.parse(response));
 			setChats(JSON.parse(response));
 		});
 	}

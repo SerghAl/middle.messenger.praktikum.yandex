@@ -1,10 +1,9 @@
-// import EventEmitter from './utils/event_bus';
 import authData from './fixtures/authorization';
 import chatsData from './fixtures/chats';
 import profileData from './fixtures/profile';
 import regData from './fixtures/registration';
+import './style.css';
 
-// export const dispatcher = new EventEmitter();
 import { Router, ROUTES } from './utils/Router/index';
 
 const router = new Router('.app');
