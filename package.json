@@ -16,12 +16,8 @@
 		"watch": "webpack --watch",
 		"serve": "webpack serve",
 		"lint": "lint-staged",
-		"prepare": "husky install"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm-run-all test lint"
-		}
+		"prepare": "husky install",
+		"pre-commit": "npm-run-all test lint"
 	},
 	"author": "Sergey Alabuzhev",
 	"license": "ISC",
