@@ -11,13 +11,16 @@ class FullheightButton extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('a', {
-			...props,
-			attrs: {
-				...props.attrs,
-				class: styles,
+		super(
+			{
+				...props,
+				attrs: {
+					...props.attrs,
+					class: styles,
+				},
 			},
-		});
+			'a'
+		);
 	}
 
 	render() {

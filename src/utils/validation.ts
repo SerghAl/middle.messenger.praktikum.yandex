@@ -11,7 +11,7 @@ function _checkCyrillicLatTire(input: string): boolean {
 }
 
 function _checkLatTireDashNum(input: string): boolean {
-	let reg = /^[a-zA-Z_\-]*$/;
+	let reg = /^[a-zA-Z0-9_\-]*$/;
 	return reg.test(input);
 }
 

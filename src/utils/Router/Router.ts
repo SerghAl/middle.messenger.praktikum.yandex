@@ -1,12 +1,11 @@
 import Component from '../component';
-import { ROUTES, Route } from '.';
-import AuthAPI from '../../api/auth_api';
+import { Route } from '.';
 import { getUserInfo } from '../Store/Actions';
 
 export default class Router {
-	static __instance: Router;
+	static __instance: Router | null;
 	public routes: Array<Route>;
-	public history: History;
+	public history: History | null;
 	private _currentRoute: Route | null;
 	private _rootQuery: string;
 
@@ -23,7 +22,15 @@ export default class Router {
 		Router.__instance = this;
 	}
 
-	use(pathname: string, component: Component, props: Props = {}): Router {
+	static cleanInatance(rootQuery: string) {
+		this.__instance = new Router(rootQuery);
+	}
+
+	use(
+		pathname: string,
+		component: typeof Component,
+		props: Props = {}
+	): Router {
 		const route = new Route(pathname, component, {
 			...props,
 			rootQuery: this._rootQuery,
@@ -35,10 +42,8 @@ export default class Router {
 	}
 
 	start(): void {
-		window.onpopstate = ((event: PopStateEvent) => {
-			if (event.currentTarget && event.currentTarget.location) {
-				this._onRoute(event.currentTarget.location.pathname);
-			}
+		window.onpopstate = (() => {
+			this._onRoute(window.location.pathname);
 		}).bind(this);
 
 		this._onRoute(window.location.pathname);
@@ -75,16 +80,16 @@ export default class Router {
 	}
 
 	go(pathname: string): void {
-		this.history.pushState({}, '', pathname);
+		this.history?.pushState({}, '', pathname);
 		this._onRoute(pathname);
 	}
 
 	back(): void {
-		this.history.back();
+		this.history?.back();
 	}
 
 	forward(): void {
-		this.history.forward();
+		this.history?.forward();
 	}
 
 	getRoute(pathname: string): Route | undefined {

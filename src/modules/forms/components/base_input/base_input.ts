@@ -10,15 +10,18 @@ class BaseInput extends Component {
 			styles += props.attrs.class ? ` ${props.attrs.class}` : '';
 		}
 
-		super('input', {
-			...props,
-			attrs: { ...props.attrs, class: styles },
-		});
+		super(
+			{
+				...props,
+				attrs: { ...props.attrs, class: styles },
+			},
+			'input'
+		);
 	}
 
 	checkValidation() {
 		if (this.props.validator) {
-			let input = <HTMLInputElement>this._element;
+			let input = <HTMLInputElement>this.getContent();
 
 			let isValid = this.props.validator(input.value);
 

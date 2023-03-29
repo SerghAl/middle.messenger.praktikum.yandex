@@ -12,9 +12,15 @@ declare module '*.txt';
 type Props = { [key: PropertyKey]: any };
 
 type TStore = {
-	chatUsers: unknown;
+	chatUsers: any;
 	chats: any;
-	dialogue: unknown;
-	dialogueMessages: unknown;
-	userInfo: unknown;
+	dialogue: any;
+	dialogueMessages: any;
+	userInfo: any;
 };
+
+type AddHooksSocket = {
+	afterMessage?: Function;
+};
+
+type TExtendedSocket = AddHooksSocket & WebSocket;

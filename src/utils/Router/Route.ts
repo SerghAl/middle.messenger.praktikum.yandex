@@ -12,11 +12,11 @@ function render(query: string, component: Component) {
 
 export default class Route {
 	private _pathname;
-	private _componentClass: Component;
+	private _componentClass: typeof Component;
 	private _component: Component | null;
 	private _props;
 
-	constructor(pathname: string, view: Component, props: Props) {
+	constructor(pathname: string, view: typeof Component, props: Props) {
 		this._pathname = pathname;
 		this._componentClass = view;
 		this._component = null;
@@ -44,6 +44,7 @@ export default class Route {
 	render(): void {
 		if (!this._component) {
 			this._component = new this._componentClass(this._props);
+
 			render(this._props.rootQuery, this._component);
 			return;
 		}

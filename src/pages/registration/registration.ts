@@ -10,7 +10,7 @@ class RegistrationView extends Component {
 			styles += ` ${props.attrs.class}`;
 		}
 
-		super('main', { ...props, attrs: { ...props.attrs, class: styles } });
+		super({ ...props, attrs: { ...props.attrs, class: styles } }, 'main');
 	}
 
 	render() {

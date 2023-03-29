@@ -1,14 +1,14 @@
 import EventBus from './event_bus';
-import { nanoid } from '../../node_modules/nanoid/index';
+import { v4 as uuidv4 } from 'uuid';
 
-abstract class Component {
+class Component {
 	eventBus;
 	props;
 	children;
 	_id;
 
 	private _meta: { tagName: string; propsAndChildren: Props };
-	protected _element: HTMLElement;
+	private _element: HTMLElement;
 
 	static EVENTS: { [key: PropertyKey]: string } = {
 		INIT: 'init',
@@ -17,12 +17,12 @@ abstract class Component {
 		FLOW_RENDER: 'flow:render',
 	};
 
-	constructor(tagName: string = 'div', propsAndChildren: Props = {}) {
+	constructor(propsAndChildren: Props = {}, tagName: string = 'div') {
 		this._meta = {
 			tagName,
 			propsAndChildren,
 		};
-		this._id = nanoid();
+		this._id = uuidv4();
 		this.eventBus = new EventBus();
 
 		let { props, children } = this._getPropsAndChildren(propsAndChildren);
@@ -89,7 +89,7 @@ abstract class Component {
 		});
 	}
 
-	componentDidMount(oldProps?: Props): void {}
+	componentDidMount(): void {}
 
 	dispatchComponentDidMount() {
 		this.eventBus.emit(Component.EVENTS.FLOW_CDM);
@@ -111,7 +111,10 @@ abstract class Component {
 	}
 
 	componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-		return true;
+		if (oldProps !== newProps) {
+			return true;
+		}
+		return false;
 	}
 
 	setProps(nextProps: Props): void {
@@ -154,7 +157,7 @@ abstract class Component {
 	}
 
 	_render(): void {
-		const component = this.render();
+		const component = this.render() || document.createDocumentFragment();
 		this.removeEvents();
 		this._element.innerHTML = '';
 		this._element.appendChild(component);
@@ -165,7 +168,9 @@ abstract class Component {
 
 	afterRender(): void {}
 
-	abstract render(): DocumentFragment;
+	render(): DocumentFragment | null {
+		return null;
+	}
 
 	_createStub(id: string): string {
 		return `<div data-id=${id}></div>`;
@@ -196,7 +201,7 @@ abstract class Component {
 
 		fragment.innerHTML = tpl({ ...this.props, ...children }, ...data);
 
-		Object.entries(this.children).forEach(([key, value]) => {
+		Object.entries(this.children).forEach(([_, value]) => {
 			if (value instanceof Array) {
 				value.map((el) => {
 					this._replaceStub(el._id, el, fragment.content);
@@ -227,7 +232,9 @@ abstract class Component {
 				return true;
 			},
 			deleteProperty(target: Props, prop: PropertyKey): boolean {
-				throw new Error('Нет доступа');
+				delete target[prop];
+				eventBus.emit(Component.EVENTS.FLOW_CDU, { ...target }, target);
+				return true;
 			},
 		});
 	}

@@ -6,17 +6,14 @@ import {
 	deleteChatUser,
 	getAllChatUsers,
 	getChatId,
-	getChatUsers,
-	setChatUsers,
 	setChats,
 	setDialogue,
 } from '../../../../utils/Store/Actions';
 import ChatAPI from '../../../../api/chat_api';
 
 export default connect(ChatUsersList, (store: TStore) => {
-	console.log(store.chatUsers);
 	let chatUsers = store.chatUsers?.map(
-		(chatUser: { login: string }) =>
+		(chatUser: { login: string; id: string }) =>
 			new ChatUser({
 				login: chatUser.login,
 				events: {
@@ -30,7 +27,7 @@ export default connect(ChatUsersList, (store: TStore) => {
 
 						if (agreement) {
 							ChatAPI.deleteUsersFromChat(chatId, users)
-								.then(({ response }) => {
+								.then(() => {
 									deleteChatUser(chatUser.id);
 									return ChatAPI.getChats();
 								})

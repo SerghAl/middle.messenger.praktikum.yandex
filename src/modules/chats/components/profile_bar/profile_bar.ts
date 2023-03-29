@@ -4,7 +4,7 @@ import Component from '../../../../utils/component';
 
 class ProfileBar extends Component {
 	constructor(props: Props) {
-		super('div', { ...props, attrs: { class: 'profile_bar' } });
+		super({ ...props, attrs: { class: 'profile_bar' } }, 'div');
 	}
 
 	render() {

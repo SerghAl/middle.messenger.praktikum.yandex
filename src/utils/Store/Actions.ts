@@ -6,7 +6,7 @@ export const setUserInfo = (data: Props) => {
 	store.set('userInfo', data);
 };
 
-export const getUserInfo = () => {
+export const getUserInfo = (): Props | null => {
 	let state = store.getState();
 	let userInfo = state.userInfo;
 	if (userInfo) {
@@ -23,7 +23,7 @@ export const setChats = (data: Props) => {
 export const updateChat = (chatId: number, data: Props) => {
 	store.set(
 		'chats',
-		store.getState().chats.map((chat) => {
+		store.getState().chats.map((chat: Props) => {
 			if (chat.id === chatId) {
 				return { ...chat, ...data };
 			} else {
@@ -33,7 +33,7 @@ export const updateChat = (chatId: number, data: Props) => {
 	);
 };
 
-export const setDialogue = (data: Props) => {
+export const setDialogue = (data: Props | null) => {
 	store.set('dialogue', data);
 };
 
